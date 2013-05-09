@@ -1,0 +1,41 @@
+<resources>
+
+    <string name="app_name">Crop Inspection</string>
+    <string name="menu_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="keepscreenon_summary">Keep the screen powered while you are inspecting</string>
+    <string name="keepscreenon_title">Keep Screen On</string>
+    <string name="lmsusername_title">Username</string>
+    <string name="lmspassword_title">Password</string>
+    <string name="lmsurl_title">URL</string>
+    <string name="prefdesc">Settings</string>
+    <string name="preftitle">Personal</string>
+    <string name="settings">Settings</string>
+    <string name="lmsusername_summary">Username from LMS</string>
+    <string name="lmspassword_summary">Password for username from LMS</string>
+    <string name="lmsurl_summary">Location of the Crop Inspection sync file</string>
+    <string name="no_maps">Google Maps v2 not Available!</string>
+	<string name="legal">Legal</string>
+	<string name="normal">Normal</string>
+	<string name="hybrid">Hybrid</string>
+	<string name="satellite">Satellite</string>
+	<string name="terrain">Terrain</string>
+	<string name="on_upgrade_error">This should not be called.</string>
+	<string name="map_button">Map</string>
+	<string name="search_button">Search</string>
+	<string name="sync_button">Sync</string>
+	<string name="check_button">Check Inspection</string>
+	
+	<string name="title_activity_main">Dialog Fragment Demo</string>
+  <string name="show_me">Show me the dialog!</string>
+  <string name="dlg_title">A Sample Dialog</string>
+  <string name="toast">Name: %1$s / Value: %2$s</string>
+  <string name="goodbye">Goodbye!</string>
+  <string name="back">You pressed BACK!</string>
+  <string name="display_name">Display Name:</string>
+  <string name="value">Value:</string>
+  <string name="search_customer_name">Customer</string>
+  <string name="search_field_filter">Filter</string>
+  <string name="search_status">Status</string>
+	
+</resources>

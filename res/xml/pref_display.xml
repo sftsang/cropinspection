@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:empub="http://schemas.android.com/apk/res-auto">
+
+	<CheckBoxPreference
+		android:defaultValue="false"
+		android:key="keepScreenOn"
+		android:summary="@string/keepscreenon_summary"
+		android:title="@string/keepscreenon_title"/>
+	<EditTextPreference 
+	    android:key="lmsUserName" 
+	    android:summary="@string/lmsusername_summary" 
+	    android:title="@string/lmsusername_title" />
+	<EditTextPreference 
+	    android:key="lmsPassword" 
+	    android:summary="@string/lmspassword_summary" 
+	    android:title="@string/lmspassword_title"
+	    android:inputType="textPassword" />
+	<EditTextPreference 
+	    android:key="lmsUrl" 
+	    android:summary="@string/lmsurl_summary" 
+	    android:title="@string/lmsurl_title" />
+	
+</PreferenceScreen>
