@@ -43,6 +43,7 @@
         <activity android:name="LegalNoticesActivity"></activity>
             
         <activity android:name="Preferences"></activity>
+        <activity android:name="FieldActivity"></activity>
     </application>
 
 </manifest>

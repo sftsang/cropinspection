@@ -253,4 +253,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       return(null);
     }
   }
+  
+  public List selectAllFields() {
+		List list = new ArrayList();
+		Cursor c = getReadableDatabase().rawQuery("SELECT * FROM fields", null);
+		if (c.moveToFirst()) {
+			do {
+				int id = c.getInt((c.getColumnIndex("id")));
+		    	String crop = c.getString(c.getColumnIndex("crop"));
+		    	String field_entrance_lng = c.getString(c.getColumnIndex("field_entrance_lng"));
+		        String field_entrance_lat = c.getString(c.getColumnIndex("field_entrance_lat"));
+		    	String field_center_lng = c.getString(c.getColumnIndex("field_center_lng"));
+		    	String field_center_lat = c.getString(c.getColumnIndex("field_center_lat"));
+				list.add(new Field(id, crop, field_entrance_lng, field_entrance_lat, field_center_lng, field_center_lat));
+			} while (c.moveToNext());
+		}
+		if (c != null && !c.isClosed()) {
+			c.close();
+		}
+		return list;
+  }
 }

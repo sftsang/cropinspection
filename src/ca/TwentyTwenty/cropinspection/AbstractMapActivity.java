@@ -72,8 +72,7 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 	}
 	
 	protected boolean readyToGo() {
-	  int status=
-	      GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+	  int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 	
 	  if (status == ConnectionResult.SUCCESS) {
 	    return(true);
