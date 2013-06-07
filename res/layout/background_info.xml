@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:columnCount="2"
+        android:padding="10dp"
+        android:rowCount="10" >
+
+        <TextView
+            android:id="@+id/bg_company_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Company"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_company"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_crop_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Crop"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_crop"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_growerno_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Grower No."
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_growerno"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_seqno_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Seq. No."
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_seqno"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_acres_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Acres"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_acres"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_location_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Location"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_location"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_malecc_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Male Crop Cert."
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_malecc"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_male_sealing_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Male Sealing"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_male_sealing"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_male_class_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Male Class"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_male_class"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_malenum_tags_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Male # Tags"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_malenum_tags"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_femalecc_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Female Crop Cert."
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_femalecc"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_female_sealing_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Female Sealing"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_female_sealing"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_female_class_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Female Class"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_female_class"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_femalenum_tags_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Female # Tags"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_femalenum_tags"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_prev1yr_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Previous 1yr"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_prev1yr"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_prev2yr_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Previous 2yr"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_prev2yr"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_prev3yr_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Previous 3yr"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_prev3yr"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_prev4yr_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Previous 4yr"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_prev4yr"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_prev5yr_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Previous 5yr"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/bg_prev5yr"
+            android:layout_gravity="left"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/bg_company_label"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:text="Company"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+    </GridLayout>
+
+</ScrollView>

@@ -1,10 +1,6 @@
 package ca.TwentyTwenty.cropinspection;
 
-import java.io.InputStream;
 import java.util.List;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,7 +11,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import ca.TwentyTwenty.cropinspection.FieldXmlParser.Customer;
-import ca.TwentyTwenty.cropinspection.FieldXmlParser.Field;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -74,19 +69,19 @@ public class ModelFragment extends SherlockFragment {
 //        
 //        in.close();
 
-        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        factory.setValidating(false);
-        XmlPullParser myxml = factory.newPullParser();
-        InputStream xml = ctxt[0].getAssets().open("fields/fields.xml");
-        
-        FieldXmlParser fieldXmlParser = new FieldXmlParser();
-        
-        //localContents = new FieldContents(fieldXmlParser.parse(xml));
-        List<List> fxp = fieldXmlParser.parse(xml);
-        List customers = fxp.get(0);
-        List fields = fxp.get(1);
-        DatabaseHelper.getInstance(ctxt[0].getApplicationContext()).saveCustomerListAsync(customers);
-        DatabaseHelper.getInstance(ctxt[0].getApplicationContext()).saveFieldListAsync(fields);
+//        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+//        factory.setValidating(false);
+//        XmlPullParser myxml = factory.newPullParser();
+//        InputStream xml = ctxt[0].getAssets().open("fields/fields.xml");
+//        
+//        FieldXmlParser fieldXmlParser = new FieldXmlParser();
+//        
+//        //localContents = new FieldContents(fieldXmlParser.parse(xml));
+//        List<List> fxp = fieldXmlParser.parse(xml);
+//        List customers = fxp.get(0);
+//        List fields = fxp.get(1);
+//        DatabaseHelper.getInstance(ctxt[0].getApplicationContext()).saveCustomerListAsync(customers);
+//        DatabaseHelper.getInstance(ctxt[0].getApplicationContext()).saveFieldListAsync(fields);
       }
       catch (Exception e) {
         this.e=e;

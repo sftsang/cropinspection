@@ -1,27 +1,33 @@
 package ca.TwentyTwenty.cropinspection;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
-import ca.TwentyTwenty.cropinspection.FieldXmlParser.Field;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.google.android.gms.internal.m;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class CropInspectionActivity extends AbstractMapActivity implements
 	OnNavigationListener {
@@ -67,7 +73,7 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	        }
 	        
 	        // get the list of fields
-	        List fields = DatabaseHelper.getInstance(this).selectAllFields();
+	        List<Field> fields = DatabaseHelper.getInstance(this).selectAllFields();
 	        
 	        // create markers and all associated information
             setupFields(fields);
@@ -136,15 +142,86 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	  private Marker addMarker(GoogleMap map, Field field) {
 		Double field_center_lat = Double.valueOf(field.field_center_lat);
 	    Double field_center_lng = Double.valueOf(field.field_center_lng);
-	    Marker m = map.addMarker(new MarkerOptions().position(new LatLng(field_center_lat, field_center_lng))
-	                                     .title(field.crop_name)
-	                                     .snippet("my snippet"));
+	    Double field_entrance_lat = Double.valueOf(field.field_entrance_lat);
+	    Double field_entrance_lng = Double.valueOf(field.field_entrance_lng);
+	    String field_status = null;
+	    String field_date_range = "";
+	    Date date_ready = null;
+	    Date date_ready_to = null;
+	    Date now = new Date();
+	    
+	    LatLng field_lat_lng = new LatLng(field_center_lat, field_center_lng);
+	    LatLng entrance_lat_lng = new LatLng(field_entrance_lat, field_entrance_lng);
+	    
+	    try {
+	    	if (field.date_ready != null  && !field.date_ready.isEmpty()) {
+				date_ready = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready);
+				date_ready_to = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready_to);
+				
+				if (date_ready.before(now) && date_ready_to.after(now)) {
+			    	field_status = "FIELD READY";
+			    } else {
+			    	field_status = "FIELD READY";
+			    }
+	    	} else {
+		    	field_status = "FIELD NOT READY";
+		    }
+		} catch (ParseException e) {
+			field_status = "FIELD NOT READY";
+			e.printStackTrace();
+		}
+	    
+	    if (field.date_ready != null  && !field.date_ready.isEmpty()) {
+	    	field_date_range = "Date Ready: " + field.date_ready + " to " + field.date_ready_to + "";
+	    }
+	    
+//	    int icon_res = 0;
+//	    
+//	    switch (field.status) {
+//	    case "inspection_completed":
+//	    	icon_res = R.drawable.field_complete;
+//	    	break;
+//	    case "field_not_ready":
+//	    	icon_res = R.drawable.field_notready;
+//	    	break;
+//	    case "field_reinspection":
+//	    	icon_res = R.drawable.field_reinspect;
+//	    	break;
+//	    case "field_ready":
+//	    	icon_res = R.drawable.field_ready;
+//	    	break;
+//	    case "field_assigned":
+//	    	icon_res = R.drawable.field_assigned;
+//	    	break;
+//	    }
+	    
+	    Marker m = map.addMarker(new MarkerOptions().position(field_lat_lng)
+	                                     .title(field.crop)
+	                                     .snippet(field.field_location + "\n" + 
+	                                    		 "Grower: "+ field.contract_grower + "\n" +
+	                                    		 "Agronomist: "+ field.agronomist + "\n" +
+	                                    		 "Acres: "+ field.acres + "\n\n" +
+	                                    		 field_status + "\n" +
+	                                    		 field_date_range)
+	                                      .icon(BitmapDescriptorFactory.fromResource(field.getIcon())));
+	    
+	    //.fromResource(poi.mType.mResId));
+	    
+	    // build field entrance marker
+	    Marker em = map.addMarker(new MarkerOptions().position(entrance_lat_lng)
+	    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.field_entrance)));
+	    
+	    // connect the field to the entrance
+	    map.addPolyline(new PolylineOptions()
+					     .add(field_lat_lng, entrance_lat_lng)
+					     .width(2)
+					     .color(Color.MAGENTA));
 	    
 	    return m;
 	  }
 	  
-	  private void setupFields(List fields) {
-		  ListIterator lit = fields.listIterator();
+	  private void setupFields(List<Field> fields) {
+		  ListIterator<Field> lit = fields.listIterator();
 	      fieldMarkerMap = new HashMap<Marker, Field>();
 	      while(lit.hasNext()) {
 	        Field field = (Field)lit.next();
@@ -152,7 +229,23 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	        fieldMarkerMap.put(m, field);
 	      }
 	      
-	    map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
+	      map.setInfoWindowAdapter(new MapInfoWindowAdapter(getLayoutInflater()));
+	      
+	      // suppress infowindows for entrance markers 
+	      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				// entrance markers have no titles
+				if (marker.getTitle() == null) {
+					return true;
+				} else {
+					return false;
+				}
+				
+			}
+	      });
+	      
+	      map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
 	    	@Override
 	    	public void onInfoWindowClick(Marker marker) {
 	    		Field field = fieldMarkerMap.get(marker);
@@ -164,6 +257,6 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 //	    	    			  .show();
 
 	    	}
-	    });
+	      });
 	 }
 }

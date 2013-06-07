@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+    
+    <TextView
+        android:id="@+id/field_no_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/field_location_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/field_no_info"/>
+
+    <TextView
+        android:id="@+id/grower_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/field_location_info"/>
+
+    <TextView
+        android:id="@+id/variety_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/grower_info"/>
+    
+    <TextView
+        android:id="@+id/agronomist_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/variety_info"/>
+    
+    <TextView
+        android:id="@+id/acres_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/agronomist_info"/>
+    <TextView
+        android:id="@+id/ready_status_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/acres_info"/>
+    <TextView
+        android:id="@+id/ready_range_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+        android:layout_below="@id/ready_status_info"/>
+
+</RelativeLayout>

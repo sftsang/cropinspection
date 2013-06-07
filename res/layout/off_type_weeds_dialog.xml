@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/type_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:padding="10dp"/>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="12"
+        android:padding="10dp"
+        android:rowCount="2" >
+
+        <TextView
+            android:id="@+id/type_c1"
+            android:layout_gravity="center_horizontal"
+            android:text="C1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Space android:layout_width="15dp" />
+
+        <TextView
+            android:id="@+id/type_c2"
+            android:layout_gravity="center_horizontal"
+            android:text="C2"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Space android:layout_width="15dp" />
+
+        <TextView
+            android:id="@+id/type_c3"
+            android:layout_gravity="center_horizontal"
+            android:text="C3"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Space android:layout_width="15dp" />
+
+        <TextView
+            android:id="@+id/type_c4"
+            android:layout_gravity="center_horizontal"
+            android:text="C4"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Space android:layout_width="5dp" />
+
+        <TextView
+            android:id="@+id/type_c5"
+            android:layout_gravity="center_horizontal"
+            android:text="C5"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Space android:layout_width="15dp" />
+
+        <TextView
+            android:id="@+id/type_c6"
+            android:layout_gravity="center_horizontal"
+            android:text="C6"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <Space android:layout_width="15dp" />
+
+        <NumberPicker
+            android:id="@+id/type_p1"
+            android:layout_gravity="center_horizontal" />
+        
+        <Space android:layout_width="15dp" />
+        
+        <NumberPicker
+            android:id="@+id/type_p2"
+            android:layout_gravity="center_horizontal" />
+        
+        <Space android:layout_width="15dp" />
+
+        <NumberPicker
+            android:id="@+id/type_p3"
+            android:layout_gravity="center_horizontal" />
+        
+        <Space android:layout_width="15dp" />
+        
+        <NumberPicker
+            android:id="@+id/type_p4"
+            android:layout_gravity="center_horizontal" />
+        
+        <Space android:layout_width="15dp" />
+        
+        <NumberPicker
+            android:id="@+id/type_p5"
+            android:layout_gravity="center_horizontal" />
+        
+        <Space android:layout_width="15dp" />
+        
+        <NumberPicker
+            android:id="@+id/type_p6"
+            android:layout_gravity="center_horizontal" />
+
+    </GridLayout>
+
+</LinearLayout>

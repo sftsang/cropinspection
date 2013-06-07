@@ -13,22 +13,22 @@
         android:gravity="center" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/field_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="N3410"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/fieldcomments"
+        android:id="@+id/details_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headinfo"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/field_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="App. Comments:"
@@ -36,7 +36,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/fieldcomments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="This is a very long comment. Captain, why are we out here chasing comets? Maybe we better talk out here; the observation lounge has turned into a swamp. Congratulations - you just destroyed the Enterprise."
@@ -47,7 +47,7 @@
         android:id="@+id/infobuttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fieldcomments"
+        android:layout_below="@+id/details_header"
         android:gravity="center" >
 
         <Button

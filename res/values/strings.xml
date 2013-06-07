@@ -1,20 +1,20 @@
 <resources>
 
-    <string name="app_name">Crop Inspection</string>
-    <string name="menu_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="keepscreenon_summary">Keep the screen powered while you are inspecting</string>
-    <string name="keepscreenon_title">Keep Screen On</string>
-    <string name="lmsusername_title">Username</string>
-    <string name="lmspassword_title">Password</string>
-    <string name="lmsurl_title">URL</string>
-    <string name="prefdesc">Settings</string>
-    <string name="preftitle">Personal</string>
-    <string name="settings">Settings</string>
-    <string name="lmsusername_summary">Username from LMS</string>
-    <string name="lmspassword_summary">Password for username from LMS</string>
-    <string name="lmsurl_summary">Location of the Crop Inspection sync file</string>
-    <string name="no_maps">Google Maps v2 not Available!</string>
+  <string name="app_name">Crop Inspection</string>
+  <string name="menu_settings">Settings</string>
+  <string name="hello_world">Hello world!</string>
+  <string name="keepscreenon_summary">Keep the screen powered while you are inspecting</string>
+  <string name="keepscreenon_title">Keep Screen On</string>
+  <string name="lmsusername_title">Username</string>
+  <string name="lmspassword_title">Password</string>
+  <string name="lmsurl_title">URL</string>
+  <string name="prefdesc">Settings</string>
+  <string name="preftitle">Personal</string>
+  <string name="settings">Settings</string>
+  <string name="lmsusername_summary">Username from LMS</string>
+  <string name="lmspassword_summary">Password for username from LMS</string>
+  <string name="lmsurl_summary">Location of the Crop Inspection sync file</string>
+  <string name="no_maps">Google Maps v2 not Available!</string>
 	<string name="legal">Legal</string>
 	<string name="normal">Normal</string>
 	<string name="hybrid">Hybrid</string>
@@ -37,5 +37,148 @@
   <string name="search_customer_name">Customer</string>
   <string name="search_field_filter">Filter</string>
   <string name="search_status">Status</string>
-	
+  <string name="codes"><![CDATA[
+<h6>Examples of Standardized Statements</h6>
+<p>
+1) B. napus, 3/sq.m, early flowering, starting 100 m into W isolation wheat crop along entire E side of wheat field (800x200m).<br />
+2) Flood damaged area on N side of field (50x50 m). <br />
+3) Heavy hail damage observed throughout field.<br />
+4) No 3 meter isolation strip observed between fields X and Y. <br />
+5) (Report correction)<br /> 
+   REPORT AMENDED DD/MM/YYYY TO CORRECT...( eg. NORTH CROP ISOLATION STATEMENT).<br />
+6) (Reinspection report)-Add the following at the end of original statement <br />
+  ...HAS BEEN REMOVED BY... (CULTIVATION, SPRAYING, ROGUEING, etc).<br />
+</p>
+
+<h6>ISOLATION CROPS and OBJECTS</h6>
+<p>
+?al Alfalfa<br />
+?b  Beans<br />
+?cn Canal<br />
+?cnl  Canola<br />
+?cl Cereal<br />
+?cf Chemfallow<br />
+?cp Chickpeas<br />
+?co Corn<br />
+?dp Dryland Pasture<br />
+?fy Farmyard<br />
+?fl Fence Line<br />
+?fx Flax<br />
+?gd Grass Ditch<br />
+?gr Gravel Road<br />
+?h  Hay<br />
+?hw Highway<br />
+?ma Marsh<br />
+?pa Pasture<br />
+?p  Peas<br />
+?po Potatoes<br />
+?r  River<br />
+?sb Sugar beets<br />
+?sf Summerfallow<br />
+?tr Track<br />
+?te Trees<br />
+</p>
+<p>
+?n8 None within 800 m of field.<br />
+?16 None within 1600 m of field.
+</p>
+
+
+<p>
+DIFFICULT TO SEPARATE - Report in counts and in comments<br />
+  Name/density/growth stage/location/area statement.
+</p>
+<p>
+?cv Cleavers<br />
+?wm Wild mustard<br />
+?wr Wild radish
+</p>
+<p>
+OBJECTIONABLE WEEDS (see list at bottom)<br />
+<br />
+USE:<br />
+ ?nf None found<br />
+OR: <br />
+ NAME of WEED and<br />
+ FREQUENCY<br />
+
+?c  Clean (only for &apos;general weed condition&apos; BOX if field absolutely clean)<br />
+?t  Trace <br />
+?f  Few <br />
+?n  Numerous  <br />
+?vw Very Weedy  <br />
+</p>
+<p>
+Growth Stage (use in comments)    <br />
+
+?cot  Cotyledon<br />
+?ros  Rosette stage<br />
+?efl  Early flowering<br />
+?lfl  Late flowering<br />
+?mat  Mature
+</p>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <br />
+
+<h6>WEEDS TO REPORT</h6>
+
+<p>
+(following 4 noted in QSP 142.1 Appendix VI)  <br />
+
+?ss Stickseed<br />
+?sm Smartweed<br />
+?bm Ball mustard<br />
+?dm Dog mustard<br />
+</p>
+
+<p>
+All Primary Noxious (Circular 6 Sec. 5.5.4) <br />
+
+Velvetleaf<br />
+Giant ragweed<br />
+Yellow rocket or winter cress<br />
+Canada thistle<br />
+Field bindweed<br />
+Couchgrass<br />
+False cleavers<br />
+Ox-eye daisy<br />
+Toadflax<br />
+Purple loosestrife<br />
+Tansy ragwort<br />
+White cockle<br />
+Bladder campion<br />
+Perennial sowthistle <br />
+</p>
+
+<p>
+All Prohibited Noxious      (Circular 6 Sec. 5.5.4)<br />
+
+REPORT IN COMMENTS AS WELL <br />
+with Name/density/growth stage/location/area statement.   <br />
+</p>
+
+<p>
+Russian knapweed    <br />
+Jointed goat grass    <br />
+Nodding thistle   <br />
+Diffuse knapweed    <br />
+Yellow star thistle   <br />
+Spotted knapweed    <br />
+Poison hemlock    <br />
+Common crupina    <br />
+Dodder<br />
+Jimsonweed<br />
+Woolly cup grass<br />
+Leafy spurge<br />
+Halogeton<br />
+Globe-pod<br />
+Hoary cress<br />
+Lens-pod hoary cress<br />
+Serrated tussock<br />
+Red bartsia<br />
+Giant foxtail<br />
+Horse nettle<br />
+Johnson grass<br />
+</p>
+  ]]></string>
 </resources>
