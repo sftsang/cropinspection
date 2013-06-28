@@ -19,7 +19,7 @@
         android:text="" 
         android:layout_below="@id/field_no_info"/>
 
-    <TextView
+    <!-- <TextView
         android:id="@+id/grower_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,6 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="" 
-        android:layout_below="@id/ready_status_info"/>
+        android:layout_below="@id/ready_status_info"/> -->
 
 </RelativeLayout>

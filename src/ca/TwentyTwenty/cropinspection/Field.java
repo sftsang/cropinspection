@@ -3,6 +3,8 @@ package ca.TwentyTwenty.cropinspection;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+
 public class Field {
 	public String acres;
 	public String agronomist;
@@ -14,7 +16,7 @@ public class Field {
 	public String crop_condition_uniformity;
 	public String crop_condition_weed;
 	public int customer_id;
-	public String date_inspected;
+	public Long date_inspected;
 	public String date_ready;
 	public String date_ready_to;
 	public String east_isolation_condition;
@@ -113,6 +115,8 @@ public class Field {
 	public String west_isolation_type;
 	public String year;
 	public String status;
+	public Long record_created_at;
+	public Long record_modified_at;
 	
 	// limited field details for map activity
 	public Field(int id, String field_no, String field_location,  String crop, String agronomist, String acres,
@@ -135,115 +139,199 @@ public class Field {
 	
 	// build new object from database cursor
 	public Field(Cursor c){
-		this.acres = c.getString(c.getColumnIndex("acres"));
-		this.agronomist = c.getString(c.getColumnIndex("agronomist"));
-		this.area = c.getString(c.getColumnIndex("area"));
-		this.comments = c.getString(c.getColumnIndex("comments"));
-		this.contract_grower = c.getString(c.getColumnIndex("contract_grower"));
-		this.crop = c.getString(c.getColumnIndex("crop"));
-		this.crop_condition_appearance = c.getString(c.getColumnIndex("crop_condition_appearance"));
-		this.crop_condition_uniformity = c.getString(c.getColumnIndex("crop_condition_uniformity"));
-		this.crop_condition_weed = c.getString(c.getColumnIndex("crop_condition_weed"));
-		this.customer_id = c.getInt(c.getColumnIndex("customer_id"));
-		this.date_inspected = c.getString(c.getColumnIndex("date_inspected"));
-		this.date_ready = c.getString(c.getColumnIndex("date_ready"));
-		this.date_ready_to = c.getString(c.getColumnIndex("date_ready_to"));
-		this.east_isolation_condition = c.getString(c.getColumnIndex("east_isolation_condition"));
-		this.east_isolation_crop = c.getString(c.getColumnIndex("east_isolation_crop"));
-		this.east_isolation_size = c.getString(c.getColumnIndex("east_isolation_size"));
-		this.east_isolation_type = c.getString(c.getColumnIndex("east_isolation_type"));
-		this.female_crop_certificate_no = c.getString(c.getColumnIndex("female_crop_certificate_no"));
-		this.female_seed_sealing_no = c.getString(c.getColumnIndex("female_seed_sealing_no"));
-		this.female_tags = c.getString(c.getColumnIndex("female_tags"));
-		this.female_year = c.getString(c.getColumnIndex("female_year"));
-		this.field_center_lat = c.getDouble(c.getColumnIndex("field_center_lat"));
-		this.field_center_lng = c.getDouble(c.getColumnIndex("field_center_lng"));
-		this.field_entrance_lat = c.getDouble(c.getColumnIndex("field_entrance_lat"));
-		this.field_entrance_lng = c.getDouble(c.getColumnIndex("field_entrance_lng"));
-		this.field_location = c.getString(c.getColumnIndex("field_location"));
-		this.field_no = c.getString(c.getColumnIndex("field_no"));
-		this.flowering_female = c.getString(c.getColumnIndex("flowering_female"));
-		this.flowering_male = c.getString(c.getColumnIndex("flowering_male"));
-		this.gps_max_lat = c.getDouble(c.getColumnIndex("gps_max_lat"));
-		this.gps_max_lng = c.getDouble(c.getColumnIndex("gps_max_lng"));
-		this.gps_min_lat = c.getDouble(c.getColumnIndex("gps_min_lat"));
-		this.gps_min_lng = c.getDouble(c.getColumnIndex("gps_min_lng"));
-		this.grower_no = c.getString(c.getColumnIndex("grower_no"));
-		this.id = c.getInt(c.getColumnIndex("id"));
-		this.inspector_1_id = c.getInt(c.getColumnIndex("inspector_1_id"));
-		this.inspector_2_id = c.getInt(c.getColumnIndex("inspector_2_id"));
-		this.internal_client_comments = c.getString(c.getColumnIndex("internal_client_comments"));
-		this.male_crop_certificate_no = c.getString(c.getColumnIndex("male_crop_certificate_no"));
-		this.male_seed_sealing_no = c.getString(c.getColumnIndex("male_seed_sealing_no"));
-		this.male_tags = c.getString(c.getColumnIndex("male_tags"));
-		this.male_year = c.getString(c.getColumnIndex("male_year"));
-		this.north_isolation_condition = c.getString(c.getColumnIndex("north_isolation_condition"));
-		this.north_isolation_crop = c.getString(c.getColumnIndex("north_isolation_crop"));
-		this.north_isolation_size = c.getString(c.getColumnIndex("north_isolation_size"));
-		this.north_isolation_type = c.getString(c.getColumnIndex("north_isolation_type"));
-		this.objectionable_weeds = c.getString(c.getColumnIndex("objectionable_weeds"));
-		this.open_pollinated_crops = c.getString(c.getColumnIndex("open_pollinated_crops"));
-		this.other_crop1_count1 = c.getInt(c.getColumnIndex("other_crop1_count1"));
-		this.other_crop1_count2 = c.getInt(c.getColumnIndex("other_crop1_count2"));
-		this.other_crop1_count3 = c.getInt(c.getColumnIndex("other_crop1_count3"));
-		this.other_crop1_count4 = c.getInt(c.getColumnIndex("other_crop1_count4"));
-		this.other_crop1_count5 = c.getInt(c.getColumnIndex("other_crop1_count5"));
-		this.other_crop1_count6 = c.getInt(c.getColumnIndex("other_crop1_count6"));
-		this.other_crop1_name = c.getString(c.getColumnIndex("other_crop1_name"));
-		this.other_crop2_count1 = c.getInt(c.getColumnIndex("other_crop2_count1"));
-		this.other_crop2_count2 = c.getInt(c.getColumnIndex("other_crop2_count2"));
-		this.other_crop2_count3 = c.getInt(c.getColumnIndex("other_crop2_count3"));
-		this.other_crop2_count4 = c.getInt(c.getColumnIndex("other_crop2_count4"));
-		this.other_crop2_count5 = c.getInt(c.getColumnIndex("other_crop2_count5"));
-		this.other_crop2_count6 = c.getInt(c.getColumnIndex("other_crop2_count6"));
-		this.other_crop2_name = c.getString(c.getColumnIndex("other_crop2_name"));
-		this.other_crop3_count1 = c.getInt(c.getColumnIndex("other_crop3_count1"));
-		this.other_crop3_count2 = c.getInt(c.getColumnIndex("other_crop3_count2"));
-		this.other_crop3_count3 = c.getInt(c.getColumnIndex("other_crop3_count3"));
-		this.other_crop3_count4 = c.getInt(c.getColumnIndex("other_crop3_count4"));
-		this.other_crop3_count5 = c.getInt(c.getColumnIndex("other_crop3_count5"));
-		this.other_crop3_count6 = c.getInt(c.getColumnIndex("other_crop3_count6"));
-		this.other_crop3_name = c.getString(c.getColumnIndex("other_crop3_name"));
-		this.plants_per_m2 = c.getString(c.getColumnIndex("plants_per_m2"));
-		this.previous_crop1 = c.getString(c.getColumnIndex("previous_crop1"));
-		this.previous_crop2 = c.getString(c.getColumnIndex("previous_crop2"));
-		this.previous_crop3 = c.getString(c.getColumnIndex("previous_crop3"));
-		this.previous_crop4 = c.getString(c.getColumnIndex("previous_crop4"));
-		this.previous_crop5 = c.getString(c.getColumnIndex("previous_crop5"));
-		this.qa = c.getString(c.getColumnIndex("qa"));
-		this.reinspection_of_id = c.getInt(c.getColumnIndex("reinspection_of_id"));
-		this.seq_no = c.getString(c.getColumnIndex("seq_no"));
-		this.south_isolation_condition = c.getString(c.getColumnIndex("south_isolation_condition"));
-		this.south_isolation_crop = c.getString(c.getColumnIndex("south_isolation_crop"));
-		this.south_isolation_size = c.getString(c.getColumnIndex("south_isolation_size"));
-		this.south_isolation_type = c.getString(c.getColumnIndex("south_isolation_type"));
-		this.weed1_count1 = c.getInt(c.getColumnIndex("weed1_count1"));
-		this.weed1_count2 = c.getInt(c.getColumnIndex("weed1_count2"));
-		this.weed1_count3 = c.getInt(c.getColumnIndex("weed1_count3"));
-		this.weed1_count4 = c.getInt(c.getColumnIndex("weed1_count4"));
-		this.weed1_count5 = c.getInt(c.getColumnIndex("weed1_count5"));
-		this.weed1_count6 = c.getInt(c.getColumnIndex("weed1_count6"));
-		this.weed1_name = c.getString(c.getColumnIndex("weed1_name"));
-		this.weed2_count1 = c.getInt(c.getColumnIndex("weed2_count1"));
-		this.weed2_count2 = c.getInt(c.getColumnIndex("weed2_count2"));
-		this.weed2_count3 = c.getInt(c.getColumnIndex("weed2_count3"));
-		this.weed2_count4 = c.getInt(c.getColumnIndex("weed2_count4"));
-		this.weed2_count5 = c.getInt(c.getColumnIndex("weed2_count5"));
-		this.weed2_count6 = c.getInt(c.getColumnIndex("weed2_count6"));
-		this.weed2_name = c.getString(c.getColumnIndex("weed2_name"));
-		this.weed3_count1 = c.getInt(c.getColumnIndex("weed3_count1"));
-		this.weed3_count2 = c.getInt(c.getColumnIndex("weed3_count2"));
-		this.weed3_count3 = c.getInt(c.getColumnIndex("weed3_count3"));
-		this.weed3_count4 = c.getInt(c.getColumnIndex("weed3_count4"));
-		this.weed3_count5 = c.getInt(c.getColumnIndex("weed3_count5"));
-		this.weed3_count6 = c.getInt(c.getColumnIndex("weed3_count6"));
-		this.weed3_name = c.getString(c.getColumnIndex("weed3_name"));
-		this.west_isolation_condition = c.getString(c.getColumnIndex("west_isolation_condition"));
-		this.west_isolation_crop = c.getString(c.getColumnIndex("west_isolation_crop"));
-		this.west_isolation_size = c.getString(c.getColumnIndex("west_isolation_size"));
-		this.west_isolation_type = c.getString(c.getColumnIndex("west_isolation_type"));
-		this.year = c.getString(c.getColumnIndex("year"));
-		this.status = c.getString(c.getColumnIndex("status"));
+		
+		// this is a limited select for uploading
+		if (c.getColumnCount() == 77) {
+			this.acres = c.getString(c.getColumnIndex("acres"));
+			this.comments = c.getString(c.getColumnIndex("comments"));
+			this.crop_condition_appearance = c.getString(c.getColumnIndex("crop_condition_appearance"));
+			this.crop_condition_uniformity = c.getString(c.getColumnIndex("crop_condition_uniformity"));
+			this.crop_condition_weed = c.getString(c.getColumnIndex("crop_condition_weed"));
+			this.customer_id = c.getInt(c.getColumnIndex("customer_id"));
+			this.date_inspected = c.getLong(c.getColumnIndex("date_inspected"));
+			this.east_isolation_condition = c.getString(c.getColumnIndex("east_isolation_condition"));
+			this.east_isolation_crop = c.getString(c.getColumnIndex("east_isolation_crop"));
+			this.east_isolation_size = c.getString(c.getColumnIndex("east_isolation_size"));
+			this.east_isolation_type = c.getString(c.getColumnIndex("east_isolation_type"));
+			this.flowering_female = c.getString(c.getColumnIndex("flowering_female"));
+			this.flowering_male = c.getString(c.getColumnIndex("flowering_male"));
+			this.id = c.getInt(c.getColumnIndex("id"));
+			this.inspector_1_id = c.getInt(c.getColumnIndex("inspector_1_id"));
+			this.inspector_2_id = c.getInt(c.getColumnIndex("inspector_2_id"));
+			this.internal_client_comments = c.getString(c.getColumnIndex("internal_client_comments"));
+			this.north_isolation_condition = c.getString(c.getColumnIndex("north_isolation_condition"));
+			this.north_isolation_crop = c.getString(c.getColumnIndex("north_isolation_crop"));
+			this.north_isolation_size = c.getString(c.getColumnIndex("north_isolation_size"));
+			this.north_isolation_type = c.getString(c.getColumnIndex("north_isolation_type"));
+			this.objectionable_weeds = c.getString(c.getColumnIndex("objectionable_weeds"));
+			this.open_pollinated_crops = c.getString(c.getColumnIndex("open_pollinated_crops"));
+			this.other_crop1_count1 = c.getInt(c.getColumnIndex("other_crop1_count1"));
+			this.other_crop1_count2 = c.getInt(c.getColumnIndex("other_crop1_count2"));
+			this.other_crop1_count3 = c.getInt(c.getColumnIndex("other_crop1_count3"));
+			this.other_crop1_count4 = c.getInt(c.getColumnIndex("other_crop1_count4"));
+			this.other_crop1_count5 = c.getInt(c.getColumnIndex("other_crop1_count5"));
+			this.other_crop1_count6 = c.getInt(c.getColumnIndex("other_crop1_count6"));
+			this.other_crop1_name = c.getString(c.getColumnIndex("other_crop1_name"));
+			this.other_crop2_count1 = c.getInt(c.getColumnIndex("other_crop2_count1"));
+			this.other_crop2_count2 = c.getInt(c.getColumnIndex("other_crop2_count2"));
+			this.other_crop2_count3 = c.getInt(c.getColumnIndex("other_crop2_count3"));
+			this.other_crop2_count4 = c.getInt(c.getColumnIndex("other_crop2_count4"));
+			this.other_crop2_count5 = c.getInt(c.getColumnIndex("other_crop2_count5"));
+			this.other_crop2_count6 = c.getInt(c.getColumnIndex("other_crop2_count6"));
+			this.other_crop2_name = c.getString(c.getColumnIndex("other_crop2_name"));
+			this.other_crop3_count1 = c.getInt(c.getColumnIndex("other_crop3_count1"));
+			this.other_crop3_count2 = c.getInt(c.getColumnIndex("other_crop3_count2"));
+			this.other_crop3_count3 = c.getInt(c.getColumnIndex("other_crop3_count3"));
+			this.other_crop3_count4 = c.getInt(c.getColumnIndex("other_crop3_count4"));
+			this.other_crop3_count5 = c.getInt(c.getColumnIndex("other_crop3_count5"));
+			this.other_crop3_count6 = c.getInt(c.getColumnIndex("other_crop3_count6"));
+			this.other_crop3_name = c.getString(c.getColumnIndex("other_crop3_name"));
+			this.plants_per_m2 = c.getString(c.getColumnIndex("plants_per_m2"));
+			this.qa = c.getString(c.getColumnIndex("qa"));
+			this.south_isolation_condition = c.getString(c.getColumnIndex("south_isolation_condition"));
+			this.south_isolation_crop = c.getString(c.getColumnIndex("south_isolation_crop"));
+			this.south_isolation_size = c.getString(c.getColumnIndex("south_isolation_size"));
+			this.south_isolation_type = c.getString(c.getColumnIndex("south_isolation_type"));
+			this.weed1_count1 = c.getInt(c.getColumnIndex("weed1_count1"));
+			this.weed1_count2 = c.getInt(c.getColumnIndex("weed1_count2"));
+			this.weed1_count3 = c.getInt(c.getColumnIndex("weed1_count3"));
+			this.weed1_count4 = c.getInt(c.getColumnIndex("weed1_count4"));
+			this.weed1_count5 = c.getInt(c.getColumnIndex("weed1_count5"));
+			this.weed1_count6 = c.getInt(c.getColumnIndex("weed1_count6"));
+			this.weed1_name = c.getString(c.getColumnIndex("weed1_name"));
+			this.weed2_count1 = c.getInt(c.getColumnIndex("weed2_count1"));
+			this.weed2_count2 = c.getInt(c.getColumnIndex("weed2_count2"));
+			this.weed2_count3 = c.getInt(c.getColumnIndex("weed2_count3"));
+			this.weed2_count4 = c.getInt(c.getColumnIndex("weed2_count4"));
+			this.weed2_count5 = c.getInt(c.getColumnIndex("weed2_count5"));
+			this.weed2_count6 = c.getInt(c.getColumnIndex("weed2_count6"));
+			this.weed2_name = c.getString(c.getColumnIndex("weed2_name"));
+			this.weed3_count1 = c.getInt(c.getColumnIndex("weed3_count1"));
+			this.weed3_count2 = c.getInt(c.getColumnIndex("weed3_count2"));
+			this.weed3_count3 = c.getInt(c.getColumnIndex("weed3_count3"));
+			this.weed3_count4 = c.getInt(c.getColumnIndex("weed3_count4"));
+			this.weed3_count5 = c.getInt(c.getColumnIndex("weed3_count5"));
+			this.weed3_count6 = c.getInt(c.getColumnIndex("weed3_count6"));
+			this.weed3_name = c.getString(c.getColumnIndex("weed3_name"));
+			this.west_isolation_condition = c.getString(c.getColumnIndex("west_isolation_condition"));
+			this.west_isolation_crop = c.getString(c.getColumnIndex("west_isolation_crop"));
+			this.west_isolation_size = c.getString(c.getColumnIndex("west_isolation_size"));
+			this.west_isolation_type = c.getString(c.getColumnIndex("west_isolation_type"));
+			this.record_created_at = c.getLong(c.getColumnIndex("record_created_at"));
+			this.record_modified_at = c.getLong(c.getColumnIndex("record_modified_at"));
+		} else { // this is a select *
+			this.acres = c.getString(c.getColumnIndex("acres"));
+			this.agronomist = c.getString(c.getColumnIndex("agronomist"));
+			this.area = c.getString(c.getColumnIndex("area"));
+			this.comments = c.getString(c.getColumnIndex("comments"));
+			this.contract_grower = c.getString(c.getColumnIndex("contract_grower"));
+			this.crop = c.getString(c.getColumnIndex("crop"));
+			this.crop_condition_appearance = c.getString(c.getColumnIndex("crop_condition_appearance"));
+			this.crop_condition_uniformity = c.getString(c.getColumnIndex("crop_condition_uniformity"));
+			this.crop_condition_weed = c.getString(c.getColumnIndex("crop_condition_weed"));
+			this.customer_id = c.getInt(c.getColumnIndex("customer_id"));
+			this.date_inspected = c.getLong(c.getColumnIndex("date_inspected"));
+			this.date_ready = c.getString(c.getColumnIndex("date_ready"));
+			this.date_ready_to = c.getString(c.getColumnIndex("date_ready_to"));
+			this.east_isolation_condition = c.getString(c.getColumnIndex("east_isolation_condition"));
+			this.east_isolation_crop = c.getString(c.getColumnIndex("east_isolation_crop"));
+			this.east_isolation_size = c.getString(c.getColumnIndex("east_isolation_size"));
+			this.east_isolation_type = c.getString(c.getColumnIndex("east_isolation_type"));
+			this.female_crop_certificate_no = c.getString(c.getColumnIndex("female_crop_certificate_no"));
+			this.female_seed_sealing_no = c.getString(c.getColumnIndex("female_seed_sealing_no"));
+			this.female_tags = c.getString(c.getColumnIndex("female_tags"));
+			this.female_year = c.getString(c.getColumnIndex("female_year"));
+			this.field_center_lat = c.getDouble(c.getColumnIndex("field_center_lat"));
+			this.field_center_lng = c.getDouble(c.getColumnIndex("field_center_lng"));
+			this.field_entrance_lat = c.getDouble(c.getColumnIndex("field_entrance_lat"));
+			this.field_entrance_lng = c.getDouble(c.getColumnIndex("field_entrance_lng"));
+			this.field_location = c.getString(c.getColumnIndex("field_location"));
+			this.field_no = c.getString(c.getColumnIndex("field_no"));
+			this.flowering_female = c.getString(c.getColumnIndex("flowering_female"));
+			this.flowering_male = c.getString(c.getColumnIndex("flowering_male"));
+			this.gps_max_lat = c.getDouble(c.getColumnIndex("gps_max_lat"));
+			this.gps_max_lng = c.getDouble(c.getColumnIndex("gps_max_lng"));
+			this.gps_min_lat = c.getDouble(c.getColumnIndex("gps_min_lat"));
+			this.gps_min_lng = c.getDouble(c.getColumnIndex("gps_min_lng"));
+			this.grower_no = c.getString(c.getColumnIndex("grower_no"));
+			this.id = c.getInt(c.getColumnIndex("id"));
+			this.inspector_1_id = c.getInt(c.getColumnIndex("inspector_1_id"));
+			this.inspector_2_id = c.getInt(c.getColumnIndex("inspector_2_id"));
+			this.internal_client_comments = c.getString(c.getColumnIndex("internal_client_comments"));
+			this.male_crop_certificate_no = c.getString(c.getColumnIndex("male_crop_certificate_no"));
+			this.male_seed_sealing_no = c.getString(c.getColumnIndex("male_seed_sealing_no"));
+			this.male_tags = c.getString(c.getColumnIndex("male_tags"));
+			this.male_year = c.getString(c.getColumnIndex("male_year"));
+			this.north_isolation_condition = c.getString(c.getColumnIndex("north_isolation_condition"));
+			this.north_isolation_crop = c.getString(c.getColumnIndex("north_isolation_crop"));
+			this.north_isolation_size = c.getString(c.getColumnIndex("north_isolation_size"));
+			this.north_isolation_type = c.getString(c.getColumnIndex("north_isolation_type"));
+			this.objectionable_weeds = c.getString(c.getColumnIndex("objectionable_weeds"));
+			this.open_pollinated_crops = c.getString(c.getColumnIndex("open_pollinated_crops"));
+			this.other_crop1_count1 = c.getInt(c.getColumnIndex("other_crop1_count1"));
+			this.other_crop1_count2 = c.getInt(c.getColumnIndex("other_crop1_count2"));
+			this.other_crop1_count3 = c.getInt(c.getColumnIndex("other_crop1_count3"));
+			this.other_crop1_count4 = c.getInt(c.getColumnIndex("other_crop1_count4"));
+			this.other_crop1_count5 = c.getInt(c.getColumnIndex("other_crop1_count5"));
+			this.other_crop1_count6 = c.getInt(c.getColumnIndex("other_crop1_count6"));
+			this.other_crop1_name = c.getString(c.getColumnIndex("other_crop1_name"));
+			this.other_crop2_count1 = c.getInt(c.getColumnIndex("other_crop2_count1"));
+			this.other_crop2_count2 = c.getInt(c.getColumnIndex("other_crop2_count2"));
+			this.other_crop2_count3 = c.getInt(c.getColumnIndex("other_crop2_count3"));
+			this.other_crop2_count4 = c.getInt(c.getColumnIndex("other_crop2_count4"));
+			this.other_crop2_count5 = c.getInt(c.getColumnIndex("other_crop2_count5"));
+			this.other_crop2_count6 = c.getInt(c.getColumnIndex("other_crop2_count6"));
+			this.other_crop2_name = c.getString(c.getColumnIndex("other_crop2_name"));
+			this.other_crop3_count1 = c.getInt(c.getColumnIndex("other_crop3_count1"));
+			this.other_crop3_count2 = c.getInt(c.getColumnIndex("other_crop3_count2"));
+			this.other_crop3_count3 = c.getInt(c.getColumnIndex("other_crop3_count3"));
+			this.other_crop3_count4 = c.getInt(c.getColumnIndex("other_crop3_count4"));
+			this.other_crop3_count5 = c.getInt(c.getColumnIndex("other_crop3_count5"));
+			this.other_crop3_count6 = c.getInt(c.getColumnIndex("other_crop3_count6"));
+			this.other_crop3_name = c.getString(c.getColumnIndex("other_crop3_name"));
+			this.plants_per_m2 = c.getString(c.getColumnIndex("plants_per_m2"));
+			this.previous_crop1 = c.getString(c.getColumnIndex("previous_crop1"));
+			this.previous_crop2 = c.getString(c.getColumnIndex("previous_crop2"));
+			this.previous_crop3 = c.getString(c.getColumnIndex("previous_crop3"));
+			this.previous_crop4 = c.getString(c.getColumnIndex("previous_crop4"));
+			this.previous_crop5 = c.getString(c.getColumnIndex("previous_crop5"));
+			this.qa = c.getString(c.getColumnIndex("qa"));
+			this.reinspection_of_id = c.getInt(c.getColumnIndex("reinspection_of_id"));
+			this.seq_no = c.getString(c.getColumnIndex("seq_no"));
+			this.south_isolation_condition = c.getString(c.getColumnIndex("south_isolation_condition"));
+			this.south_isolation_crop = c.getString(c.getColumnIndex("south_isolation_crop"));
+			this.south_isolation_size = c.getString(c.getColumnIndex("south_isolation_size"));
+			this.south_isolation_type = c.getString(c.getColumnIndex("south_isolation_type"));
+			this.weed1_count1 = c.getInt(c.getColumnIndex("weed1_count1"));
+			this.weed1_count2 = c.getInt(c.getColumnIndex("weed1_count2"));
+			this.weed1_count3 = c.getInt(c.getColumnIndex("weed1_count3"));
+			this.weed1_count4 = c.getInt(c.getColumnIndex("weed1_count4"));
+			this.weed1_count5 = c.getInt(c.getColumnIndex("weed1_count5"));
+			this.weed1_count6 = c.getInt(c.getColumnIndex("weed1_count6"));
+			this.weed1_name = c.getString(c.getColumnIndex("weed1_name"));
+			this.weed2_count1 = c.getInt(c.getColumnIndex("weed2_count1"));
+			this.weed2_count2 = c.getInt(c.getColumnIndex("weed2_count2"));
+			this.weed2_count3 = c.getInt(c.getColumnIndex("weed2_count3"));
+			this.weed2_count4 = c.getInt(c.getColumnIndex("weed2_count4"));
+			this.weed2_count5 = c.getInt(c.getColumnIndex("weed2_count5"));
+			this.weed2_count6 = c.getInt(c.getColumnIndex("weed2_count6"));
+			this.weed2_name = c.getString(c.getColumnIndex("weed2_name"));
+			this.weed3_count1 = c.getInt(c.getColumnIndex("weed3_count1"));
+			this.weed3_count2 = c.getInt(c.getColumnIndex("weed3_count2"));
+			this.weed3_count3 = c.getInt(c.getColumnIndex("weed3_count3"));
+			this.weed3_count4 = c.getInt(c.getColumnIndex("weed3_count4"));
+			this.weed3_count5 = c.getInt(c.getColumnIndex("weed3_count5"));
+			this.weed3_count6 = c.getInt(c.getColumnIndex("weed3_count6"));
+			this.weed3_name = c.getString(c.getColumnIndex("weed3_name"));
+			this.west_isolation_condition = c.getString(c.getColumnIndex("west_isolation_condition"));
+			this.west_isolation_crop = c.getString(c.getColumnIndex("west_isolation_crop"));
+			this.west_isolation_size = c.getString(c.getColumnIndex("west_isolation_size"));
+			this.west_isolation_type = c.getString(c.getColumnIndex("west_isolation_type"));
+			this.year = c.getString(c.getColumnIndex("year"));
+			this.status = c.getString(c.getColumnIndex("status"));
+			this.record_created_at = c.getLong(c.getColumnIndex("record_created_at"));
+			this.record_modified_at = c.getLong(c.getColumnIndex("record_modified_at"));
+		}
 	}
 	
 	// full field details for detail view
@@ -258,7 +346,7 @@ public class Field {
 		this.crop_condition_uniformity = b.getString("crop_condition_uniformity");
 		this.crop_condition_weed = b.getString("crop_condition_weed");
 		this.customer_id = b.getInt("customer_id");
-		this.date_inspected = b.getString("date_inspected");
+		this.date_inspected = b.getLong("date_inspected");
 		this.date_ready = b.getString("date_ready");
 		this.date_ready_to = b.getString("date_ready_to");
 		this.east_isolation_condition = b.getString("east_isolation_condition");
@@ -357,6 +445,8 @@ public class Field {
 		this.west_isolation_type = b.getString("west_isolation_type");
 		this.year = b.getString("year");
 		this.status = b.getString("status");
+		this.record_created_at = b.getLong("record_created_at");
+		this.record_modified_at = b.getLong("record_modified_at");
 	}
 
     public Bundle getField() {
@@ -372,7 +462,7 @@ public class Field {
     	b.putString("crop_condition_uniformity", crop_condition_uniformity);
     	b.putString("crop_condition_weed", crop_condition_weed);
     	b.putInt("customer_id", customer_id);
-    	b.putString("date_inspected", date_inspected);
+    	b.putLong("date_inspected", date_inspected);
     	b.putString("date_ready", date_ready);
     	b.putString("date_ready_to", date_ready_to);
     	b.putString("east_isolation_condition", east_isolation_condition);
@@ -471,11 +561,14 @@ public class Field {
     	b.putString("west_isolation_type", west_isolation_type);
     	b.putString("year", year);
     	b.putString("status", status);
+    	b.putLong("record_created_at", record_created_at);
+    	b.putLong("record_modified_at", record_modified_at);
     	return b;
     }
     
     public int getIcon(){
     	int customer_id = this.customer_id;
+    	//Log.w("status", String.valueOf(this.id));
     	Status status = Status.valueOf(this.status.toUpperCase());
     	int res_id = 0;
     	
@@ -484,7 +577,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_assigned_1296; break;
 	    			case 1638: res_id = R.drawable.field_assigned_1638; break;
-	    			case 1968: res_id = R.drawable.field_assigned_1638; break;
+	    			case 1968: res_id = R.drawable.field_assigned_1968; break;
 	    			case 2167: res_id = R.drawable.field_assigned_2167; break;
 	    			case 7151: res_id = R.drawable.field_assigned_7151; break;
 	    			default:
@@ -496,7 +589,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_complete_1296; break;
 	    			case 1638: res_id = R.drawable.field_complete_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_complete_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_complete_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_complete_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_complete_7151; break;                    
 	    			default:
@@ -508,7 +601,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_notready_1296; break;                    
 	    			case 1638: res_id = R.drawable.field_notready_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_notready_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_notready_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_notready_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_notready_7151; break;                    
 	    			default:                      
@@ -520,7 +613,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_notready_1296; break;                    
 	    			case 1638: res_id = R.drawable.field_notready_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_notready_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_notready_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_notready_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_notready_7151; break;                    
 	    			default:
@@ -532,7 +625,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_reinspect_1296; break;
 	    			case 1638: res_id = R.drawable.field_reinspect_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_reinspect_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_reinspect_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_reinspect_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_reinspect_7151; break;                    
 	    			default:
@@ -544,7 +637,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_ready_1296; break;                    
 	    			case 1638: res_id = R.drawable.field_ready_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_ready_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_ready_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_ready_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_ready_7151; break;                    
 	    			default:
@@ -556,7 +649,7 @@ public class Field {
 	    		switch (customer_id) {
 	    			case 1296: res_id = R.drawable.field_pendingreview_1296; break;                    
 	    			case 1638: res_id = R.drawable.field_pendingreview_1638; break;                    
-	    			case 1968: res_id = R.drawable.field_pendingreview_1638; break;                    
+	    			case 1968: res_id = R.drawable.field_pendingreview_1968; break;                    
 	    			case 2167: res_id = R.drawable.field_pendingreview_2167; break;                    
 	    			case 7151: res_id = R.drawable.field_pendingreview_7151; break;                    
 	    			default:                      
@@ -572,6 +665,13 @@ public class Field {
     	return res_id;
     }
     
+    // convert to JSON
+    public String toJSON(){
+    	Gson gson = new Gson();
+    	String json = gson.toJson(this);
+    	return json;
+    }
+    
     // status of field.
     public enum Status {
     	FIELD_ASSIGNED,
@@ -581,6 +681,6 @@ public class Field {
     	FIELD_REINSPECTION,
         FIELD_READY,
         INSPECTION_PENDING_REVIEW;
-    }    
+    }
     
 }

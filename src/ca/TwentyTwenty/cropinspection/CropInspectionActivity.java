@@ -10,11 +10,15 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
@@ -32,6 +36,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class CropInspectionActivity extends AbstractMapActivity implements
 	OnNavigationListener {
 	
+	private SharedPreferences prefs;
 	private static final String STATE_NAV="nav";
 	private static final int[] MAP_TYPE_NAMES= { R.string.normal,
 	      									     R.string.hybrid, 
@@ -41,9 +46,10 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	      									GoogleMap.MAP_TYPE_HYBRID, 
 	      									GoogleMap.MAP_TYPE_SATELLITE,
 	      									GoogleMap.MAP_TYPE_TERRAIN };
-	private GoogleMap map=null;
+	public GoogleMap map=null;
 	private static final String MODEL = "model";
 	private HashMap<Marker, Field> fieldMarkerMap;
+	public CropInspectionActivity map_activity = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +76,82 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 
 	          map.moveCamera(center);
 	          map.animateCamera(zoom);
+	          map.setMyLocationEnabled(true);
+	          map.getUiSettings().setMyLocationButtonEnabled(true);
 	        }
 	        
 	        // get the list of fields
-	        List<Field> fields = DatabaseHelper.getInstance(this).selectAllFields();
+	        //List<Field> fields = DatabaseHelper.getInstance(this).selectAllFields();
+	        
+	        // package into a bundle for easy transport
+			Bundle b = new Bundle();
+			b.putString("customer", "Pioneer");
+			b.putString("search_filter", "");
+			b.putString("status", "All");
+		
+			// spin up bg thread and find in db
+			AsyncSearch search = new AsyncSearch();
+			search.execute(b);
 	        
 	        // create markers and all associated information
-            setupFields(fields);
-	        
-//	        addMarker(map, 40.748963847316034, -73.96807193756104, R.string.un, R.string.united_nations);
-//	        addMarker(map, 40.76866299974387, -73.98268461227417, R.string.lincoln_center, R.string.lincoln_center_snippet);
-//	        addMarker(map, 40.765136435316755, -73.97989511489868, R.string.carnegie_hall, R.string.practice_x3);
-//	        addMarker(map, 40.70686417491799, -74.01572942733765, R.string.downtown_club, R.string.heisman_trophy);
+            //setupFields(fields);
 	   }
+	    
+	   //prefs = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+	   prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	}
+	
+	public void setPrefs(SharedPreferences prefs){
+	  this.prefs = prefs;
+    }
+	
+	@Override
+    public void onResume(){
+	    super.onResume();
+	    
+	    // we just need to make sure we have an auth token at this point
+	    // if not we have to tell the user and direct them to re-enter information
+	    if (prefs != null){
+	    	Log.w("authtlogin", prefs.getString("AuthToken", ""));
+	    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.CANADA);			
+	    	Log.w("last_sync", sdf.format(new Date(prefs.getLong("last_sync", 0))));
+		    if(prefs.getString("AuthToken",null) == null) {
+	  	    	Intent intent = new Intent(CropInspectionActivity.this, LoginActivity.class);
+	  	    	startActivityForResult(intent,0);
+	  	    }
+	    }
+    }
+	
+//	void loadTasksFromAPI(String url) {
+//	    GetTasksTask getTasksTask = new GetTasksTask(CropInspectionActivity.this);
+//	    getTasksTask.setMessageLoading("Syncing fields...");
+//	    getTasksTask.execute(url + "?auth_token=" + prefs.getString("AuthToken", ""));
+//	}
+//	
+//	// inner class for api access
+//	private class GetTasksTask extends UrlJsonAsyncTask {
+//		public GetTasksTask(Context context) {
+//			super(context);
+//		}
+//		
+//		@Override
+//		protected void onPostExecute(JSONObject json) {
+//			try {
+//				JSONArray jsonTasks = json.getJSONObject("data").getJSONArray("tasks");
+//				int length = jsonTasks.length();
+//				List<String> taskTitles = new ArrayList<String>(length);
+//				
+//				for (int i=0;i<length;i++) {
+////					taskTitles.add(jsonTasks.getJSONObject(i).getString("title"));	                
+//					Toast.makeText(context, jsonTasks.getJSONObject(0).getString("title"), Toast.LENGTH_SHORT).show();
+//				}
+//			} catch (Exception e) {
+//				Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+//			} finally {
+//				super.onPostExecute(json);
+//			}
+//		}
+//	}
 
 	  @Override
 	  public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -153,6 +221,9 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    LatLng field_lat_lng = new LatLng(field_center_lat, field_center_lng);
 	    LatLng entrance_lat_lng = new LatLng(field_entrance_lat, field_entrance_lng);
 	    
+	    // TO DO filter out obviously invalid co-ordinates
+	    
+	    
 	    try {
 	    	if (field.date_ready != null  && !field.date_ready.isEmpty()) {
 				date_ready = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready);
@@ -208,10 +279,10 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    //.fromResource(poi.mType.mResId));
 	    
 	    // build field entrance marker
-	    Marker em = map.addMarker(new MarkerOptions().position(entrance_lat_lng)
+	   map.addMarker(new MarkerOptions().position(entrance_lat_lng)
 	    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.field_entrance)));
 	    
-	    // connect the field to the entrance
+//	    // connect the field to the entrance
 	    map.addPolyline(new PolylineOptions()
 					     .add(field_lat_lng, entrance_lat_lng)
 					     .width(2)
@@ -220,7 +291,7 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    return m;
 	  }
 	  
-	  private void setupFields(List<Field> fields) {
+	  public void setupFields(List<Field> fields) {
 		  ListIterator<Field> lit = fields.listIterator();
 	      fieldMarkerMap = new HashMap<Marker, Field>();
 	      while(lit.hasNext()) {
@@ -259,4 +330,44 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    	}
 	      });
 	 }
+	  
+		private class AsyncSearch extends AsyncTask<Bundle, Void, ArrayList<Field>> {
+			ArrayList<Field> fields;
+			
+			@Override
+			protected ArrayList<Field> doInBackground(Bundle... b) {
+				//Log.w("stuff", b[0].toString());
+				try {
+					fields = DatabaseHelper.getInstance(getApplicationContext()).searchFieldsDialog(b[0]);
+				} catch (Exception e){
+					Log.w("error searching", "Something went wrong with the search");
+				}
+				return fields;
+			}
+			
+			@Override
+			public void onPostExecute(ArrayList<Field> fields) {
+				if (!fields.isEmpty()) {
+					map_activity.map.clear();
+					map_activity.setupFields(fields);
+					// update the UI
+//					FieldDetailItem fd = ((FieldActivity) getActivity()).fieldDetails.get(list_position);
+//					fd.list_item_middle = String.valueOf(b.getInt("type_p1")) + "/" + String.valueOf(b.getInt("type_p2")) + "/" + String.valueOf(b.getInt("type_p3")) + "/" 
+//										  + String.valueOf(b.getInt("type_p4")) + "/" + String.valueOf(b.getInt("type_p5")) + "/" + String.valueOf(b.getInt("type_p6"));
+//					fd.list_item_bottom = b.getString("type_name");
+//					ListView lv = (ListView) ((FieldActivity) getActivity()).findViewById(R.id.fielddetails);
+//					BaseAdapter ba = (BaseAdapter) lv.getAdapter();
+//					ba.notifyDataSetChanged();
+//					
+//					// update the appropriate parts of the field object too
+//					String list_title = b.getString("list_title");
+//					if (list_title == "Off-type 1") {
+//						((FieldActivity) getActivity()).field_details.other_crop_count_1_1 = b.getInt("type_p1");
+//						((FieldActivity) getActivity()).field_details.weed2_name = b.getString("type_name");
+//					}
+				} else {
+					Toast.makeText(map_activity.getApplicationContext(), "No fields found.", Toast.LENGTH_LONG).show();
+				}
+			}
+		}
 }

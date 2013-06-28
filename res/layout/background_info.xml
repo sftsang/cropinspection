@@ -277,15 +277,6 @@
             android:layout_gravity="left"
             android:text=""
             android:textAppearance="?android:attr/textAppearanceSmall" />
-        
-        <TextView
-            android:id="@+id/bg_company_label"
-            android:layout_gravity="left"
-            android:paddingRight="20dp"
-            android:text="Company"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
     </GridLayout>
 
 </ScrollView>

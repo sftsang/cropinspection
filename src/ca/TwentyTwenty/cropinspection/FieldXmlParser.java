@@ -2,14 +2,17 @@ package ca.TwentyTwenty.cropinspection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Xml;
 
 public class FieldXmlParser {
@@ -24,6 +27,16 @@ public class FieldXmlParser {
 			  return readFieldList(parser);
 		  } finally {
 			  in.close();
+		  }
+	  }
+	  
+	  public List parse(XmlPullParser in) throws XmlPullParserException, IOException {
+		  try {
+			  in.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			  in.nextTag();
+			  return readFieldList(in);
+		  } finally {
+			  
 		  }
 	  }
 	  
@@ -79,6 +92,21 @@ public class FieldXmlParser {
         }
     }
     
+    private Long convert_date_to_epoch(String date_string) {
+    	Date date = null;
+    	Long epoch = null;
+    	
+    	try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.CANADA);
+        	date = sdf.parse(date_string);
+        	epoch = date.getTime();
+    	} catch (Exception e) {
+    		
+    	}
+    	
+    	return epoch;
+    }
+    
     // Parses the contents of a field
     private Field readField(XmlPullParser parser) throws XmlPullParserException, IOException {
 		Bundle b = new Bundle();
@@ -93,7 +121,7 @@ public class FieldXmlParser {
 	    b.putString("crop_condition_uniformity", parser.getAttributeValue(null, "crop_condition_uniformity"));
 	    b.putString("crop_condition_weed", parser.getAttributeValue(null, "crop_condition_weed"));
 	    b.putInt("customer_id", xmlIntValue(parser, "customer_id"));
-	    b.putString("date_inspected", parser.getAttributeValue(null, "date_inspected"));
+	    b.putLong("date_inspected", convert_date_to_epoch(parser.getAttributeValue(null, "date_inspected")));
 	    b.putString("date_ready", parser.getAttributeValue(null, "date_ready"));
 	    b.putString("date_ready_to", parser.getAttributeValue(null, "date_ready_to"));
 	    b.putString("east_isolation_condition", parser.getAttributeValue(null, "east_isolation_condition"));
@@ -199,6 +227,7 @@ public class FieldXmlParser {
 	    b.putString("west_isolation_type", parser.getAttributeValue(null, "west_isolation_type"));
 	    b.putString("year", parser.getAttributeValue(null, "year"));
 	    b.putString("status", parser.getAttributeValue(null, "status"));
+	    b.putLong("record_created_at", System.currentTimeMillis());
 		
         return new Field(b);
     }
