@@ -30,6 +30,7 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 	public MyCustomBaseAdapter mcba;
 	ListView lv;
 	View result;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.CANADA);
 	
 	static FieldFragment newInstance(int fieldId) {
 		FieldFragment frag = new FieldFragment();
@@ -52,7 +53,6 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 		
 		editor = (RelativeLayout)result.findViewById(R.id.fieldedit); 
 		
-////		DatabaseHelper.getInstance(getActivity()).getNoteAsync(position, this);
 		mcba = new MyCustomBaseAdapter(getActivity(), ((FieldActivity) getActivity()).fieldDetails);
 				
 		lv = (ListView)result.findViewById(R.id.fielddetails);
@@ -206,55 +206,55 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 	                       fullObject.list_item_top == "Weeds 2" ||
 	                       fullObject.list_item_top == "Weeds 3") {
                 	
-                	bundle.putString("other_crop1_name", ((FieldActivity) getActivity()).field_details.other_crop1_name);
-                	bundle.putString("other_crop2_name", ((FieldActivity) getActivity()).field_details.other_crop2_name);
-                	bundle.putString("other_crop3_name", ((FieldActivity) getActivity()).field_details.other_crop3_name);
+                	bundle.putString("other_crop_count_1_name", ((FieldActivity) getActivity()).field_details.other_crop_count_1_name);
+                	bundle.putString("other_crop_count_2_name", ((FieldActivity) getActivity()).field_details.other_crop_count_2_name);
+                	bundle.putString("other_crop_count_3_name", ((FieldActivity) getActivity()).field_details.other_crop_count_3_name);
 
-                	bundle.putString("weed1_name", ((FieldActivity) getActivity()).field_details.weed1_name);
-                	bundle.putString("weed2_name", ((FieldActivity) getActivity()).field_details.weed2_name);
-                	bundle.putString("weed3_name", ((FieldActivity) getActivity()).field_details.weed3_name);
+                	bundle.putString("weed_count_1_name", ((FieldActivity) getActivity()).field_details.weed_count_1_name);
+                	bundle.putString("weed_count_2_name", ((FieldActivity) getActivity()).field_details.weed_count_2_name);
+                	bundle.putString("weed_count_3_name", ((FieldActivity) getActivity()).field_details.weed_count_3_name);
 
-                	bundle.putInt("other_crop1_count1", ((FieldActivity) getActivity()).field_details.other_crop1_count1);
-                	bundle.putInt("other_crop1_count2", ((FieldActivity) getActivity()).field_details.other_crop1_count2);
-                	bundle.putInt("other_crop1_count3", ((FieldActivity) getActivity()).field_details.other_crop1_count3);
-                	bundle.putInt("other_crop1_count4", ((FieldActivity) getActivity()).field_details.other_crop1_count4);
-                	bundle.putInt("other_crop1_count5", ((FieldActivity) getActivity()).field_details.other_crop1_count5);
-                	bundle.putInt("other_crop1_count6", ((FieldActivity) getActivity()).field_details.other_crop1_count6);
+                	bundle.putInt("other_crop_count_1_1", ((FieldActivity) getActivity()).field_details.other_crop_count_1_1);
+                	bundle.putInt("other_crop_count_1_2", ((FieldActivity) getActivity()).field_details.other_crop_count_1_2);
+                	bundle.putInt("other_crop_count_1_3", ((FieldActivity) getActivity()).field_details.other_crop_count_1_3);
+                	bundle.putInt("other_crop_count_1_4", ((FieldActivity) getActivity()).field_details.other_crop_count_1_4);
+                	bundle.putInt("other_crop_count_1_5", ((FieldActivity) getActivity()).field_details.other_crop_count_1_5);
+                	bundle.putInt("other_crop_count_1_6", ((FieldActivity) getActivity()).field_details.other_crop_count_1_6);
                 	                                      
-                	bundle.putInt("other_crop2_count1", ((FieldActivity) getActivity()).field_details.other_crop2_count1);
-                	bundle.putInt("other_crop2_count2", ((FieldActivity) getActivity()).field_details.other_crop2_count2);
-                	bundle.putInt("other_crop2_count3", ((FieldActivity) getActivity()).field_details.other_crop2_count3);
-                	bundle.putInt("other_crop2_count4", ((FieldActivity) getActivity()).field_details.other_crop2_count4);
-                	bundle.putInt("other_crop2_count5", ((FieldActivity) getActivity()).field_details.other_crop2_count5);
-                	bundle.putInt("other_crop2_count6", ((FieldActivity) getActivity()).field_details.other_crop2_count6);
+                	bundle.putInt("other_crop_count_2_1", ((FieldActivity) getActivity()).field_details.other_crop_count_2_1);
+                	bundle.putInt("other_crop_count_2_2", ((FieldActivity) getActivity()).field_details.other_crop_count_2_2);
+                	bundle.putInt("other_crop_count_2_3", ((FieldActivity) getActivity()).field_details.other_crop_count_2_3);
+                	bundle.putInt("other_crop_count_2_4", ((FieldActivity) getActivity()).field_details.other_crop_count_2_4);
+                	bundle.putInt("other_crop_count_2_5", ((FieldActivity) getActivity()).field_details.other_crop_count_2_5);
+                	bundle.putInt("other_crop_count_2_6", ((FieldActivity) getActivity()).field_details.other_crop_count_2_6);
                 	                                      
-                	bundle.putInt("other_crop3_count1", ((FieldActivity) getActivity()).field_details.other_crop3_count1);
-                	bundle.putInt("other_crop3_count2", ((FieldActivity) getActivity()).field_details.other_crop3_count2);
-                	bundle.putInt("other_crop3_count3", ((FieldActivity) getActivity()).field_details.other_crop3_count3);
-                	bundle.putInt("other_crop3_count4", ((FieldActivity) getActivity()).field_details.other_crop3_count4);
-                	bundle.putInt("other_crop3_count5", ((FieldActivity) getActivity()).field_details.other_crop3_count5);
-                	bundle.putInt("other_crop3_count6", ((FieldActivity) getActivity()).field_details.other_crop3_count6);
+                	bundle.putInt("other_crop_count_3_1", ((FieldActivity) getActivity()).field_details.other_crop_count_3_1);
+                	bundle.putInt("other_crop_count_3_2", ((FieldActivity) getActivity()).field_details.other_crop_count_3_2);
+                	bundle.putInt("other_crop_count_3_3", ((FieldActivity) getActivity()).field_details.other_crop_count_3_3);
+                	bundle.putInt("other_crop_count_3_4", ((FieldActivity) getActivity()).field_details.other_crop_count_3_4);
+                	bundle.putInt("other_crop_count_3_5", ((FieldActivity) getActivity()).field_details.other_crop_count_3_5);
+                	bundle.putInt("other_crop_count_3_6", ((FieldActivity) getActivity()).field_details.other_crop_count_3_6);
 
-                	bundle.putInt("weed1_count1", ((FieldActivity) getActivity()).field_details.weed1_count1);
-                	bundle.putInt("weed1_count2", ((FieldActivity) getActivity()).field_details.weed1_count2);
-                	bundle.putInt("weed1_count3", ((FieldActivity) getActivity()).field_details.weed1_count3);
-                	bundle.putInt("weed1_count4", ((FieldActivity) getActivity()).field_details.weed1_count4);
-                	bundle.putInt("weed1_count5", ((FieldActivity) getActivity()).field_details.weed1_count5);
-                	bundle.putInt("weed1_count6", ((FieldActivity) getActivity()).field_details.weed1_count6);
+                	bundle.putInt("weed_count_1_1", ((FieldActivity) getActivity()).field_details.weed_count_1_1);
+                	bundle.putInt("weed_count_1_2", ((FieldActivity) getActivity()).field_details.weed_count_1_2);
+                	bundle.putInt("weed_count_1_3", ((FieldActivity) getActivity()).field_details.weed_count_1_3);
+                	bundle.putInt("weed_count_1_4", ((FieldActivity) getActivity()).field_details.weed_count_1_4);
+                	bundle.putInt("weed_count_1_5", ((FieldActivity) getActivity()).field_details.weed_count_1_5);
+                	bundle.putInt("weed_count_1_6", ((FieldActivity) getActivity()).field_details.weed_count_1_6);
                 	                                      
-                	bundle.putInt("weed2_count1", ((FieldActivity) getActivity()).field_details.weed2_count1);
-                	bundle.putInt("weed2_count2", ((FieldActivity) getActivity()).field_details.weed2_count2);
-                	bundle.putInt("weed2_count3", ((FieldActivity) getActivity()).field_details.weed2_count3);
-                	bundle.putInt("weed2_count4", ((FieldActivity) getActivity()).field_details.weed2_count4);
-                	bundle.putInt("weed2_count5", ((FieldActivity) getActivity()).field_details.weed2_count5);
-                	bundle.putInt("weed2_count6", ((FieldActivity) getActivity()).field_details.weed2_count6);
+                	bundle.putInt("weed_count_2_1", ((FieldActivity) getActivity()).field_details.weed_count_2_1);
+                	bundle.putInt("weed_count_2_2", ((FieldActivity) getActivity()).field_details.weed_count_2_2);
+                	bundle.putInt("weed_count_2_3", ((FieldActivity) getActivity()).field_details.weed_count_2_3);
+                	bundle.putInt("weed_count_2_4", ((FieldActivity) getActivity()).field_details.weed_count_2_4);
+                	bundle.putInt("weed_count_2_5", ((FieldActivity) getActivity()).field_details.weed_count_2_5);
+                	bundle.putInt("weed_count_2_6", ((FieldActivity) getActivity()).field_details.weed_count_2_6);
                 	                                      
-                	bundle.putInt("weed3_count1", ((FieldActivity) getActivity()).field_details.weed3_count1);
-                	bundle.putInt("weed3_count2", ((FieldActivity) getActivity()).field_details.weed3_count2);
-                	bundle.putInt("weed3_count3", ((FieldActivity) getActivity()).field_details.weed3_count3);
-                	bundle.putInt("weed3_count4", ((FieldActivity) getActivity()).field_details.weed3_count4);
-                	bundle.putInt("weed3_count5", ((FieldActivity) getActivity()).field_details.weed3_count5);
-                	bundle.putInt("weed3_count6", ((FieldActivity) getActivity()).field_details.weed3_count6);
+                	bundle.putInt("weed_count_3_1", ((FieldActivity) getActivity()).field_details.weed_count_3_1);
+                	bundle.putInt("weed_count_3_2", ((FieldActivity) getActivity()).field_details.weed_count_3_2);
+                	bundle.putInt("weed_count_3_3", ((FieldActivity) getActivity()).field_details.weed_count_3_3);
+                	bundle.putInt("weed_count_3_4", ((FieldActivity) getActivity()).field_details.weed_count_3_4);
+                	bundle.putInt("weed_count_3_5", ((FieldActivity) getActivity()).field_details.weed_count_3_5);
+                	bundle.putInt("weed_count_3_6", ((FieldActivity) getActivity()).field_details.weed_count_3_6);
                 	
                 	// create the dialog
                 	OffTypeDialogFragment otdf = new OffTypeDialogFragment();
@@ -366,52 +366,52 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 			fd = new FieldDetailItem("Open Pollinated Crops", ((FieldActivity) getActivity()).field_details.open_pollinated_crops, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Off-type 1", ((FieldActivity) getActivity()).field_details.other_crop1_count1 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop1_count2 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop1_count3 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop1_count4 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop1_count5 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop1_count6, ((FieldActivity) getActivity()).field_details.other_crop1_name);
+			fd = new FieldDetailItem("Off-type 1", ((FieldActivity) getActivity()).field_details.other_crop_count_1_1 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_1_2 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_1_3 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_1_4 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_1_5 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_1_6, ((FieldActivity) getActivity()).field_details.other_crop_count_1_name);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Off-type 2", ((FieldActivity) getActivity()).field_details.other_crop2_count1 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop2_count2 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop2_count3 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop2_count4 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop2_count5 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop2_count6, ((FieldActivity) getActivity()).field_details.other_crop2_name);
+			fd = new FieldDetailItem("Off-type 2", ((FieldActivity) getActivity()).field_details.other_crop_count_2_1 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_2_2 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_2_3 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_2_4 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_2_5 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_2_6, ((FieldActivity) getActivity()).field_details.other_crop_count_2_name);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Off-type 3", ((FieldActivity) getActivity()).field_details.other_crop3_count1 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop3_count2 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop3_count3 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop3_count4 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop3_count5 + "/" +
-												   ((FieldActivity) getActivity()).field_details.other_crop3_count6, ((FieldActivity) getActivity()).field_details.other_crop3_name);
+			fd = new FieldDetailItem("Off-type 3", ((FieldActivity) getActivity()).field_details.other_crop_count_3_1 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_3_2 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_3_3 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_3_4 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_3_5 + "/" +
+												   ((FieldActivity) getActivity()).field_details.other_crop_count_3_6, ((FieldActivity) getActivity()).field_details.other_crop_count_3_name);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Weeds 1", ((FieldActivity) getActivity()).field_details.weed1_count1 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed1_count2 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed1_count3 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed1_count4 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed1_count5 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed1_count6, null);
+			fd = new FieldDetailItem("Weeds 1", ((FieldActivity) getActivity()).field_details.weed_count_1_1 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_1_2 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_1_3 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_1_4 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_1_5 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_1_6, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Weeds 2", ((FieldActivity) getActivity()).field_details.weed2_count1 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed2_count2 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed2_count3 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed2_count4 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed2_count5 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed2_count6, null);
+			fd = new FieldDetailItem("Weeds 2", ((FieldActivity) getActivity()).field_details.weed_count_2_1 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_2_2 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_2_3 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_2_4 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_2_5 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_2_6, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Weeds 3", ((FieldActivity) getActivity()).field_details.weed3_count1 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed3_count2 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed3_count3 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed3_count4 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed3_count5 + "/" +
-											    ((FieldActivity) getActivity()).field_details.weed3_count6, null);
+			fd = new FieldDetailItem("Weeds 3", ((FieldActivity) getActivity()).field_details.weed_count_3_1 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_3_2 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_3_3 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_3_4 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_3_5 + "/" +
+											    ((FieldActivity) getActivity()).field_details.weed_count_3_6, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
 			
@@ -439,11 +439,17 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 			fd = new FieldDetailItem("Additional Comments", ((FieldActivity) getActivity()).field_details.comments, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
-			fd = new FieldDetailItem("Inspected By", ((FieldActivity) getActivity()).field_details.inspector_1_id + "/" + ((FieldActivity) getActivity()).field_details.inspector_2_id + " on " + ((FieldActivity) getActivity()).field_details.date_inspected, null);
+			// format the date
+			String formatted_date_inspected = "n/a";
+			Long date_inspected = ((FieldActivity) getActivity()).field_details.date_inspected;
+			if (date_inspected > 0){
+				formatted_date_inspected = sdf.format(new Date(date_inspected)); 
+			}
+			fd = new FieldDetailItem("Inspected By", ((FieldActivity) getActivity()).field_details.inspector_1_id + "/" + ((FieldActivity) getActivity()).field_details.inspector_2_id + " on " + formatted_date_inspected, null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);
 			
 			// this isn't in the normal db... we need to add this
-			fd = new FieldDetailItem("Checked By", "TODO", null);
+			fd = new FieldDetailItem("Checked By", "", null);
 			((FieldActivity) getActivity()).fieldDetails.add(fd);			
 		}
 	}
@@ -519,8 +525,8 @@ public class FieldFragment extends SherlockFragment implements DatabaseHelper.Fi
 		mcba.notifyDataSetChanged();
 		
 		TextView field_no = (TextView)result.findViewById(R.id.field_no);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.CANADA);
-		field_no.setText(field.field_no + " " + sdf.format(new Date(field.record_modified_at)));
+//		field_no.setText(field.field_no + " " + sdf.format(new Date(field.record_modified_at)));
+		field_no.setText(field.field_no);
 		
 		TextView customer_comments = (TextView)result.findViewById(R.id.fieldcomments);
 		customer_comments.setText(field.internal_client_comments);

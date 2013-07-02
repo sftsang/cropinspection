@@ -54,8 +54,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 public class AbstractMapActivity extends SherlockFragmentActivity {
 	protected static final String TAG_ERROR_DIALOG_FRAGMENT="errorDialog";
 	
-//	public static final String SERVER_URL = "http://crop.2020seedlabs.ca/crop_inspections/";
-	public static final String SERVER_URL = "http://192.168.7.4:8084/crop_inspections/";
+	public static final String SERVER_URL = "http://crop.2020seedlabs.ca/crop_inspections/";
+//	public static final String SERVER_URL = "http://192.168.7.4:8084/crop_inspections/";
 	public static final String QUERY_FILE = "sync_xml";
 	public static final String QUERY_OPTIONS = "?auth_token=";
 	public static final String QUERY_URL = SERVER_URL + QUERY_FILE + QUERY_OPTIONS;
@@ -196,32 +196,43 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 		   Log.w("modified_fields", String.valueOf(modified_fields.size()));
 		   
 		   if (modified_fields.size() > 0) {
+			   JSONObject upload_result = new JSONObject();
 			   try {				   
-				   // push these modified fields up to the server
-				   String upload_result = uploadFields(modified_fields);
-					
-				   // if something went wrong with the upload, cancel the update
-				   if (upload_result == ""){
+				  // push these modified fields up to the server
+				  upload_result = uploadFields(modified_fields);
+				  // if something went wrong with the upload, cancel the update
+				   if (upload_result.getBoolean("success")){
 					   // pull down XML file and update
-//					   XmlPullParser receivedData = tryDownloadingXmlData(auth_token[0]);
-//					   tryParsingXmlData(receivedData);
+					   XmlPullParser receivedData = tryDownloadingXmlData(SERVER_URL + QUERY_FILE + QUERY_OPTIONS + prefs.getString("AuthToken", ""));
+					   tryParsingXmlData(receivedData);
 				   } else {
 					   // do something
 				   }
 			   } catch (Error e) {
 				   // do something
-			   }
+			   } catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		   } else {
 			   // there are no modified field so just pull from the server
-//			   XmlPullParser receivedData = tryDownloadingXmlData(SERVER_URL + QUERY_FILE + QUERY_OPTIONS + prefs.getString("AuthToken", ""));
-//			   tryParsingXmlData(receivedData);
+			   XmlPullParser receivedData = tryDownloadingXmlData(SERVER_URL + QUERY_FILE + QUERY_OPTIONS + prefs.getString("AuthToken", ""));
+			   tryParsingXmlData(receivedData);
 		   }
 		   
 		   return 1;
 		}
 		
-		private String uploadFields(ArrayList<Field> modified_fields){
+		private JSONObject uploadFields(ArrayList<Field> modified_fields){
+			// call API and update server
 			String error_msg = "";
+			String auth_token = prefs.getString("AuthToken", "");
+			DefaultHttpClient client = new DefaultHttpClient();
+	        HttpPost post = new HttpPost(SERVER_URL + "upload_mobile" + QUERY_OPTIONS + auth_token);
+	        JSONObject holder = new JSONObject();
+	        JSONObject fieldObj = new JSONObject();
+	        String response = null;
+	        JSONObject json = new JSONObject();
 
 			try{
 				Log.w("uploading","here");
@@ -230,17 +241,7 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 				for (int i=0;i<modified_fields.size();i++) {
 					String mf_json = modified_fields.get(i).toJSON();
 				    ja.put(mf_json);
-				}
-				
-				// call API and update server
-				String auth_token = prefs.getString("AuthToken", "");
-				DefaultHttpClient client = new DefaultHttpClient();
-		        HttpPost post = new HttpPost(SERVER_URL + "upload_mobile" + QUERY_OPTIONS + auth_token);
-		        JSONObject holder = new JSONObject();
-		        JSONObject fieldObj = new JSONObject();
-		        String response = null;
-		        JSONObject json = new JSONObject();
-		        
+				}	        
 
 		        try {
 		            try {
@@ -275,12 +276,12 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 		            Log.e("JSON", "" + e);
 		        }
 
-		        return json.toString();
+		        return json;
 			} catch(Error e) {
 				error_msg = e.toString();
 			}
 			
-			return error_msg;
+			return json;
 		}
 		
 		private XmlPullParser tryDownloadingXmlData(String authorized_url) {
@@ -342,7 +343,10 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 					
 					Log.w("stopped parsing", "here");
 					
-//					return processReceivedData(receivedData);
+					// set last time synced
+					SharedPreferences.Editor edit_pref = prefs.edit();
+					edit_pref.putLong("last_sync", System.currentTimeMillis());
+					edit_pref.commit();
 				} catch (XmlPullParserException e) {
 					Log.e("XmlE","xmlpullparser exception", e);
 				} catch (IOException e) {
@@ -362,11 +366,6 @@ public class AbstractMapActivity extends SherlockFragmentActivity {
 			pd.dismiss();
 			
 			Log.w("last_sync", String.valueOf(System.currentTimeMillis()));
-			
-			// set last time synced
-			SharedPreferences.Editor edit_pref = prefs.edit();
-			edit_pref.putLong("last_sync", System.currentTimeMillis());
-			edit_pref.commit();
 		}
 	}
 }

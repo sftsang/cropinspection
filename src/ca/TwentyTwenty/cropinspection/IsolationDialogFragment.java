@@ -255,7 +255,8 @@ public class IsolationDialogFragment extends DialogFragment implements
 					field_activity.field_details.north_isolation_crop = b.getString("isolation_crop");
 				}
 				
-				Toast.makeText(ctxt, String.valueOf(b.getLong("record_modified_at")), Toast.LENGTH_LONG).show();
+//				Toast.makeText(ctxt, String.valueOf(b.getLong("record_modified_at")), Toast.LENGTH_LONG).show();
+				Log.w("record_modified_at", String.valueOf(b.getLong("record_modified_at")));
 				
 			} else {
 				Toast.makeText(ctxt, "Change NOT Saved! Try again.", Toast.LENGTH_LONG).show();

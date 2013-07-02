@@ -12,17 +12,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#C20000"
-        android:textSize="17sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
  
     <TextView
         android:id="@+id/crvmiddle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="17sp" />
  
     <TextView
         android:id="@+id/crvbottom"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="17sp" />
  
 </LinearLayout>

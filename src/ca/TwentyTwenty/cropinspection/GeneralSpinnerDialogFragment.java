@@ -51,12 +51,10 @@ public class GeneralSpinnerDialogFragment extends DialogFragment implements
 		spinner_list.add("");
 		
 		if (list_title == "Uniformity") {
-			spinner_list.add("Good");
 			spinner_list.add("Above Average");
 			spinner_list.add("Average");
 			spinner_list.add("Below Average");
 			general_data = crop_condition_uniformity;
-			
 		} else if (list_title == "Appearance") {
 			spinner_list.add("Good");
 			spinner_list.add("Fair");
@@ -67,6 +65,7 @@ public class GeneralSpinnerDialogFragment extends DialogFragment implements
 			spinner_list.add("Trace");
 			spinner_list.add("Few");
 			spinner_list.add("Numerous");
+			spinner_list.add("Very Weedy");
 			general_data = crop_condition_weed;
 		} else if (list_title == "QA") {
 			spinner_list.add("Good");

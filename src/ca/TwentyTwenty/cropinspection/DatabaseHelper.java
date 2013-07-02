@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   private static final int SCHEMA_VERSION = 1;
   private static DatabaseHelper singleton = null;
   private Context ctxt = null;
-  private long current_time = System.currentTimeMillis(); 
+ 
 
   synchronized static DatabaseHelper getInstance(Context ctxt) {
     if (singleton == null) {
@@ -76,19 +76,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //						              "field_location_type TEXT, qa TEXT, plants_per_m2 INTEGER, updated_at TEXT, crop TEXT, comments TEXT, contract_grower TEXT)");
       
 
-//		"other_crop1_count1 INTEGER, other_crop1_count2 INTEGER, other_crop1_count3 INTEGER, other_crop1_count4 INTEGER, other_crop1_count5 INTEGER, other_crop1_count6 INTEGER, " +
-//		"other_crop1_name TEXT, other_crop2_count1 INTEGER, other_crop2_count2 INTEGER, other_crop2_count3 INTEGER, other_crop2_count4 INTEGER, other_crop2_count5 INTEGER, other_crop2_count6 INTEGER, " +
-//		"other_crop2_name TEXT, other_crop3_count1 INTEGER, other_crop3_count2 INTEGER, other_crop3_count3 INTEGER, other_crop3_count4 INTEGER, other_crop3_count5 INTEGER, other_crop3_count6 INTEGER, " +
-//		"other_crop3_name TEXT, " +
-//		"weed1_count6 INTEGER, weed1_name TEXT, weed2_count1 INTEGER, weed2_count2 INTEGER, weed2_count3 INTEGER, weed2_count4 INTEGER, weed2_count5 INTEGER, weed2_count6 INTEGER, weed2_name TEXT, " +
-//		"weed3_count1 INTEGER, weed3_count2 INTEGER, weed3_count3 INTEGER, weed3_count4 INTEGER, weed3_count5 INTEGER, weed3_count6 INTEGER, weed3_name TEXT, weed1_count1 INTEGER, weed1_count2 INTEGER, weed1_count3 INTEGER, weed1_count4 INTEGER, weed1_count5 INTEGER, " +
+//		"other_crop_count_1_1 INTEGER, other_crop_count_1_2 INTEGER, other_crop_count_1_3 INTEGER, other_crop_count_1_4 INTEGER, other_crop_count_1_5 INTEGER, other_crop_count_1_6 INTEGER, " +
+//		"other_crop_count_1_name TEXT, other_crop_count_2_1 INTEGER, other_crop_count_2_2 INTEGER, other_crop_count_2_3 INTEGER, other_crop_count_2_4 INTEGER, other_crop_count_2_5 INTEGER, other_crop_count_2_6 INTEGER, " +
+//		"other_crop_count_2_name TEXT, other_crop_count_3_1 INTEGER, other_crop_count_3_2 INTEGER, other_crop_count_3_3 INTEGER, other_crop_count_3_4 INTEGER, other_crop_count_3_5 INTEGER, other_crop_count_3_6 INTEGER, " +
+//		"other_crop_count_3_name TEXT, " +
+//		"weed_count_1_6 INTEGER, weed_count_1_name TEXT, weed_count_2_1 INTEGER, weed_count_2_2 INTEGER, weed_count_2_3 INTEGER, weed_count_2_4 INTEGER, weed_count_2_5 INTEGER, weed_count_2_6 INTEGER, weed_count_2_name TEXT, " +
+//		"weed_count_3_1 INTEGER, weed_count_3_2 INTEGER, weed_count_3_3 INTEGER, weed_count_3_4 INTEGER, weed_count_3_5 INTEGER, weed_count_3_6 INTEGER, weed_count_3_name TEXT, weed_count_1_1 INTEGER, weed_count_1_2 INTEGER, weed_count_1_3 INTEGER, weed_count_1_4 INTEGER, weed_count_1_5 INTEGER, " +
       String sql_attr = "(acres TEXT, agronomist TEXT, area TEXT, comments TEXT, contract_grower TEXT, crop TEXT, crop_condition_appearance TEXT, crop_condition_uniformity TEXT, " +
 		        		"crop_condition_weed TEXT, customer_id INTEGER, date_inspected INTEGER, date_ready TEXT, date_ready_to TEXT, east_isolation_condition TEXT, east_isolation_crop TEXT, east_isolation_size TEXT, " +
 		          		"east_isolation_type TEXT, female_crop_certificate_no TEXT, female_seed_sealing_no TEXT, female_tags TEXT, female_year TEXT, field_center_lat REAL, field_center_lng REAL, " +
 		          		"field_entrance_lat REAL, field_entrance_lng REAL, field_location TEXT, field_no TEXT, flowering_female TEXT, flowering_male TEXT, gps_max_lat REAL, gps_max_lng REAL, gps_min_lat REAL, " +
 		          		"gps_min_lng REAL, grower_no TEXT, id INTEGER PRIMARY KEY, inspector_1_id INTEGER, inspector_2_id INTEGER, internal_client_comments TEXT, male_crop_certificate_no TEXT, " +
 		          		"male_seed_sealing_no TEXT, male_tags TEXT, male_year TEXT, north_isolation_condition TEXT, north_isolation_crop TEXT, north_isolation_size TEXT, north_isolation_type TEXT, " +
-		          		"objectionable_weeds TEXT, open_pollinated_crops TEXT, " +
+		          		"objectionable_weeds TEXT, open_pollinated_crops TEXT, other_crop_count_1_name TEXT, " +
 		          		"other_crop_count_1_1 INTEGER, other_crop_count_1_2 INTEGER, other_crop_count_1_3 INTEGER, other_crop_count_1_4 INTEGER, " +
 			            "other_crop_count_1_5 INTEGER, other_crop_count_1_6 INTEGER, other_crop_count_2_name TEXT, other_crop_count_2_1 INTEGER, " +
 			            "other_crop_count_2_2 INTEGER, other_crop_count_2_3 INTEGER, other_crop_count_2_4 INTEGER, other_crop_count_2_5 INTEGER, " +
@@ -103,12 +103,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			            "qa TEXT, reinspection_of_id INTEGER, seq_no TEXT, south_isolation_condition TEXT, " +
 		          		"south_isolation_crop TEXT, south_isolation_size TEXT, south_isolation_type TEXT, west_isolation_condition TEXT, " +
 		          		"west_isolation_crop TEXT, west_isolation_size TEXT, west_isolation_type TEXT, year TEXT, status TEXT, record_created_at INTEGER, record_modified_at INTEGER" +
-		          		"date_signed TEXT, signed_by_id INTEGER)";
+		          		"date_signed TEXT, signed_by_id INTEGER, field_assigned TEXT)";
       
       // create table that map will pull from
       db.execSQL("CREATE TABLE fields" + sql_attr);
-      
-//      saveFieldsFromXML();
       
       db.setTransactionSuccessful();
     }
@@ -158,10 +156,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  // update the bundle so we can update the ui with this translation
 	  b.putString("isolation_crop", iso_crop_statement);
 	  
-	  String[] args= { b.getString("isolation_size"), b.getString("isolation_type"), b.getString("isolation_condition"), iso_crop_statement, String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  String[] args= { b.getString("isolation_size"), b.getString("isolation_type"), b.getString("isolation_condition"), iso_crop_statement, String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = list_title.toLowerCase(Locale.US);
-	  b.putLong("record_modified_at", current_time);
+	  b.putLong("record_modified_at", current_time());
 		
 	  try {	  
 		  getWritableDatabase().execSQL("UPDATE fields SET " + query_var + "_isolation_size = ?, " 
@@ -176,30 +174,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   
   void saveOffTypeDialog(Bundle b) {	  
 	  String[] args= { b.getString("type_name"), String.valueOf(b.getInt("type_p1")), String.valueOf(b.getInt("type_p2")), String.valueOf(b.getInt("type_p3")), 
-			  		   String.valueOf(b.getInt("type_p4")), String.valueOf(b.getInt("type_p5")), String.valueOf(b.getInt("type_p6")), String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+			  		   String.valueOf(b.getInt("type_p4")), String.valueOf(b.getInt("type_p5")), String.valueOf(b.getInt("type_p6")), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = list_title.substring(list_title.length()-1);
-	  b.putLong("record_modified_at", current_time);
+	  b.putLong("record_modified_at", current_time());
 
-	  try {	  
-		  getWritableDatabase().execSQL("UPDATE fields SET other_crop" + query_var + "_name = ?, " +
-		  								 "other_crop" + query_var + "_count1 = ?, " +
-										 "other_crop" + query_var + "_count2 = ?, " +
-										 "other_crop" + query_var + "_count3 = ?, " +
-										 "other_crop" + query_var + "_count4 = ?, " +
-										 "other_crop" + query_var + "_count5 = ?, " +
-										 "other_crop" + query_var + "_count6 = ?, " +
-										 "record_modified_at = ? WHERE id = ?", args);
+	  try {	 
+		  getWritableDatabase().execSQL("UPDATE fields SET other_crop_count_" + query_var + "_name = ?, " +
+		  								"other_crop_count_" + query_var + "_1 = ?, " +
+		  								"other_crop_count_" + query_var + "_2 = ?, " +
+		  								"other_crop_count_" + query_var + "_3 = ?, " +
+		  								"other_crop_count_" + query_var + "_4 = ?, " +
+		  								"other_crop_count_" + query_var + "_5 = ?, " +
+		  								"other_crop_count_" + query_var + "_6 = ?, " +
+										"record_modified_at = ? WHERE id = ?", args);
 	  } catch(Exception e) {
 		  Log.e("Off-type Dialog", "Error saving off-type data.");
 	  }
   }
   
   void saveGeneralSpinnerDialog(Bundle b) {	  
-	  String[] args= { b.getString("general_data"), String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  String[] args= { b.getString("general_data"), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = "";
-	  b.putLong("record_modified_at", current_time);
+	  b.putLong("record_modified_at", current_time());
 	  	  
 	  if (list_title == "Uniformity" ){
 		  query_var = "crop_condition_uniformity";
@@ -225,10 +223,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  // update the bundle so we can update the ui with this translation
 	  b.putString("general_data", general_statement);
 	  
-	  String[] args= { general_statement, String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  String[] args= { general_statement, String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = "";
-	  b.putLong("record_modified_at", current_time);
+	  b.putLong("record_modified_at", current_time());
 	  
 	  if (list_title == "Open Pollinated Crops") {
 		query_var = "open_pollinated_crops";
@@ -246,8 +244,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   }
   
   void saveFlowerSyncDialog(Bundle b) {
-	  b.putLong("record_modified_at", current_time);
-	  String[] args= { b.getString("male_sync"), b.getString("female_sync"), String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  b.putLong("record_modified_at", current_time());
+	  String[] args= { b.getString("male_sync"), b.getString("female_sync"), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 
 	  try {	  
 		  getWritableDatabase().execSQL("UPDATE fields SET flowering_male = ?, flowering_female = ?, record_modified_at = ? WHERE id = ?", args);
@@ -257,8 +255,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   }
   
   void saveGeneralPickerDialog(Bundle b) {
-	  b.putLong("record_modified_at", current_time);
-	  String[] args= { b.getString("plants_per_m2"), String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  b.putLong("record_modified_at", current_time());
+	  String[] args= { b.getString("plants_per_m2"), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 
 	  try {	  
 		  getWritableDatabase().execSQL("UPDATE fields SET plants_per_m2 = ?, record_modified_at = ? WHERE id = ?", args);
@@ -269,10 +267,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   
   void saveInspectedByDialog(Bundle b) {
 	  Calendar c = Calendar.getInstance();
-	  b.putLong("date_inspected", current_time);
-	  b.putLong("record_modified_at", current_time);
+	  b.putLong("date_inspected", current_time());
+	  b.putLong("record_modified_at", current_time());
 	  
-	  String[] args= { b.getString("inspector_1_id"), b.getString("inspector_2_id"), String.valueOf(b.getLong("date_inspected")), String.valueOf(current_time), String.valueOf(b.getInt("field_id")) };
+	  String[] args= { b.getString("inspector_1_id"), b.getString("inspector_2_id"), String.valueOf(b.getLong("date_inspected")), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  
 	  try {	  
 		  getWritableDatabase().execSQL("UPDATE fields SET inspector_1_id = ?, inspector_2_id = ?, date_inspected = ?, record_modified_at = ? WHERE id = ?", args);		  		  
@@ -282,10 +280,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   }
   
   ArrayList<Field> getModifiedDeviceFields(Long last_sync) { 
-//	  String[] args = { last_sync.toString() };
+	  String[] args = { last_sync.toString() };
 	  
 	  // for testing
-	  String[] args = { "1372369435128" };
+//	  String[] args = { "1372413161167" };
 	  
 	  Log.w("modified last sync", last_sync.toString());
 	  Cursor c = null;
@@ -296,12 +294,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  c = getReadableDatabase().rawQuery("SELECT acres, comments, crop_condition_appearance, crop_condition_uniformity, crop_condition_weed, customer_id, date_inspected, " +
 		  		"east_isolation_condition, east_isolation_crop, east_isolation_size, east_isolation_type, flowering_female, flowering_male, id, inspector_1_id, inspector_2_id, " +
 		  		"internal_client_comments, north_isolation_condition, north_isolation_crop, north_isolation_size, north_isolation_type, objectionable_weeds, open_pollinated_crops, " +
-		  		"other_crop1_count1, other_crop1_count2, other_crop1_count3, other_crop1_count4, other_crop1_count5, other_crop1_count6, other_crop1_name, other_crop2_count1, " +
-		  		"other_crop2_count2, other_crop2_count3, other_crop2_count4, other_crop2_count5, other_crop2_count6, other_crop2_name, other_crop3_count1, other_crop3_count2, " +
-		  		"other_crop3_count3, other_crop3_count4, other_crop3_count5, other_crop3_count6, other_crop3_name, plants_per_m2, qa, south_isolation_condition, south_isolation_crop, " +
-		  		"south_isolation_size, south_isolation_type, weed1_count1, weed1_count2, weed1_count3, weed1_count4, weed1_count5, weed1_count6, weed1_name, weed2_count1, weed2_count2, weed2_count3, " +
-		  		"weed2_count4, weed2_count5, weed2_count6, weed2_name, weed3_count1, weed3_count2, weed3_count3, weed3_count4, weed3_count5, weed3_count6, weed3_name, west_isolation_condition, " +
-		  		"west_isolation_crop, west_isolation_size, west_isolation_type, record_created_at, record_modified_at " +
+		  		"other_crop_count_1_1, other_crop_count_1_2, other_crop_count_1_3, other_crop_count_1_4, other_crop_count_1_5, other_crop_count_1_6, other_crop_count_1_name, other_crop_count_2_1, " +
+		  		"other_crop_count_2_2, other_crop_count_2_3, other_crop_count_2_4, other_crop_count_2_5, other_crop_count_2_6, other_crop_count_2_name, other_crop_count_3_1, other_crop_count_3_2, " +
+		  		"other_crop_count_3_3, other_crop_count_3_4, other_crop_count_3_5, other_crop_count_3_6, other_crop_count_3_name, plants_per_m2, qa, south_isolation_condition, south_isolation_crop, " +
+		  		"south_isolation_size, south_isolation_type, weed_count_1_1, weed_count_1_2, weed_count_1_3, weed_count_1_4, weed_count_1_5, weed_count_1_6, weed_count_1_name, weed_count_2_1, weed_count_2_2, weed_count_2_3, " +
+		  		"weed_count_2_4, weed_count_2_5, weed_count_2_6, weed_count_2_name, weed_count_3_1, weed_count_3_2, weed_count_3_3, weed_count_3_4, weed_count_3_5, weed_count_3_6, weed_count_3_name, west_isolation_condition, " +
+		  		"west_isolation_crop, west_isolation_size, west_isolation_type, record_created_at, record_modified_at, field_assigned " +
 		  		"FROM fields WHERE record_modified_at > ?", args);
 		  c.moveToFirst();
 	      while(!c.isAfterLast()){
@@ -381,7 +379,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	// replace codes with statements
 	String converted_statement = coded;
-	String[] new_statement = converted_statement.split("//");
+	String[] new_statement = converted_statement.split(" ");
 	for (int i=0; i< new_statement.length; i++){
 	  // see if code matches the code array
 	  if (isolation_codes.containsKey(new_statement[i])){
@@ -396,7 +394,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   
   ArrayList<Field> searchFieldsDialog(Bundle b){
 	  String customer = b.getString("customer");
-	  String filter = b.getString("search_filter");
+	  String keyword = b.getString("search_filter");
 	  String status = b.getString("status");
 	  ArrayList<String> query = new ArrayList<String>();
 	  ArrayList<String> query_args = new ArrayList<String>();
@@ -405,8 +403,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  if (status != "All") {
 		  // manipulate status text to fit db status
 		  String mod_status = status.replaceAll(" ", "_").toLowerCase(Locale.ENGLISH);
-		  query.add("status = ?");
-		  query_args.add(mod_status);
+		  
+		  // need field ready to include all variations of "ready"
+		  if (status == "Field Ready"){
+			  query.add("(status = ? OR status = ? OR status = ?)");
+			  query_args.add("field_ready");
+			  query_args.add("field_assigned");
+			  query_args.add("field_reinspection");
+		  } else {
+			  query.add("status = ?");
+			  query_args.add(mod_status);  
+		  }
 	  }
 	  
 	  if (customer == "Other") {
@@ -427,7 +434,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  }
 	  }
 	  
-	  if (status != "All" || customer != "All") {
+	  if (keyword.isEmpty() == false){
+		  query.add("(field_no LIKE ? OR agronomist LIKE ? OR field_location LIKE ? OR crop LIKE ?)");
+		  query_args.add("%" + keyword + "%");
+		  query_args.add("%" + keyword + "%");
+		  query_args.add("%" + keyword + "%");
+		  query_args.add("%" + keyword + "%");
+	  }
+	  
+	  if (status != "All" || customer != "All" || keyword.isEmpty() == false) {
 		  full_query_string = "SELECT * FROM fields WHERE ";
 		  full_query_string = full_query_string + TextUtils.join(" AND ", query);  
 	  }
@@ -437,8 +452,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  Cursor c = null;
 	  
 	  ArrayList<Field> found_fields = new ArrayList<Field>();
+	  //Log.w("qs", full_query_string + strJoin(args,","));
 	  try {
-		  Log.w("qs", full_query_string + String.valueOf(args.length));
+		  
 		  if (args.length > 0) {
 			  c = getReadableDatabase().rawQuery(full_query_string, args);
 		  } else {
@@ -600,10 +616,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		    	  Double field_entrance_lat = c.getDouble(c.getColumnIndex("field_entrance_lat"));
 		  		  Double field_entrance_lng = c.getDouble(c.getColumnIndex("field_entrance_lng"));
 		  		  String status = c.getString(c.getColumnIndex("status"));
+		  		  String field_assigned = c.getString(c.getColumnIndex("field_assigned"));
 		    	  
 		    	  // GET only what we need to display on the main map and query on click
 		    	  fieldList.add(new Field(id, field_no, field_location, crop, agronomist, acres,
-		    		contract_grower, field_center_lat, field_center_lng, field_entrance_lat, field_entrance_lng, status));
+		    		contract_grower, field_center_lat, field_center_lng, field_entrance_lat, field_entrance_lng, status, field_assigned));
 		    	  
 		    	  c.moveToNext();
 		      }
@@ -654,19 +671,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				  String.valueOf(f.gps_max_lng), String.valueOf(f.gps_min_lat), String.valueOf(f.gps_min_lng), f.grower_no, String.valueOf(f.id), 
 				  String.valueOf(f.inspector_1_id), String.valueOf(f.inspector_2_id), f.internal_client_comments, f.male_crop_certificate_no, f.male_seed_sealing_no, 
 				  f.male_tags, f.male_year, f.north_isolation_condition, f.north_isolation_crop, f.north_isolation_size, f.north_isolation_type, f.objectionable_weeds, 
-				  f.open_pollinated_crops, String.valueOf(f.other_crop1_count1), String.valueOf(f.other_crop1_count2), String.valueOf(f.other_crop1_count3), 
-				  String.valueOf(f.other_crop1_count4), String.valueOf(f.other_crop1_count5), String.valueOf(f.other_crop1_count6), f.other_crop1_name, 
-				  String.valueOf(f.other_crop2_count1), String.valueOf(f.other_crop2_count2), String.valueOf(f.other_crop2_count3), String.valueOf(f.other_crop2_count4), 
-				  String.valueOf(f.other_crop2_count5), String.valueOf(f.other_crop2_count6), f.other_crop2_name, String.valueOf(f.other_crop3_count1), 
-				  String.valueOf(f.other_crop3_count2), String.valueOf(f.other_crop3_count3), String.valueOf(f.other_crop3_count4), String.valueOf(f.other_crop3_count5), 
-				  String.valueOf(f.other_crop3_count6), f.other_crop3_name, f.plants_per_m2, f.previous_crop1, f.previous_crop2, f.previous_crop3, f.previous_crop4, 
+				  f.open_pollinated_crops, String.valueOf(f.other_crop_count_1_1), String.valueOf(f.other_crop_count_1_2), String.valueOf(f.other_crop_count_1_3), 
+				  String.valueOf(f.other_crop_count_1_4), String.valueOf(f.other_crop_count_1_5), String.valueOf(f.other_crop_count_1_6), f.other_crop_count_1_name, 
+				  String.valueOf(f.other_crop_count_2_1), String.valueOf(f.other_crop_count_2_2), String.valueOf(f.other_crop_count_2_3), String.valueOf(f.other_crop_count_2_4), 
+				  String.valueOf(f.other_crop_count_2_5), String.valueOf(f.other_crop_count_2_6), f.other_crop_count_2_name, String.valueOf(f.other_crop_count_3_1), 
+				  String.valueOf(f.other_crop_count_3_2), String.valueOf(f.other_crop_count_3_3), String.valueOf(f.other_crop_count_3_4), String.valueOf(f.other_crop_count_3_5), 
+				  String.valueOf(f.other_crop_count_3_6), f.other_crop_count_3_name, f.plants_per_m2, f.previous_crop1, f.previous_crop2, f.previous_crop3, f.previous_crop4, 
 				  f.previous_crop5, f.qa, String.valueOf(f.reinspection_of_id), f.seq_no, f.south_isolation_condition, f.south_isolation_crop, f.south_isolation_size, 
-				  f.south_isolation_type, String.valueOf(f.weed1_count1), String.valueOf(f.weed1_count2), String.valueOf(f.weed1_count3), String.valueOf(f.weed1_count4), 
-				  String.valueOf(f.weed1_count5), String.valueOf(f.weed1_count6), f.weed1_name, String.valueOf(f.weed2_count1), String.valueOf(f.weed2_count2), 
-				  String.valueOf(f.weed2_count3), String.valueOf(f.weed2_count4), String.valueOf(f.weed2_count5), String.valueOf(f.weed2_count6), f.weed2_name, 
-				  String.valueOf(f.weed3_count1), String.valueOf(f.weed3_count2), String.valueOf(f.weed3_count3), String.valueOf(f.weed3_count4), 
-				  String.valueOf(f.weed3_count5), String.valueOf(f.weed3_count6), f.weed3_name, f.west_isolation_condition, f.west_isolation_crop, f.west_isolation_size, 
-				  f.west_isolation_type, f.year, f.status, String.valueOf(f.record_created_at) };
+				  f.south_isolation_type, String.valueOf(f.weed_count_1_1), String.valueOf(f.weed_count_1_2), String.valueOf(f.weed_count_1_3), String.valueOf(f.weed_count_1_4), 
+				  String.valueOf(f.weed_count_1_5), String.valueOf(f.weed_count_1_6), f.weed_count_1_name, String.valueOf(f.weed_count_2_1), String.valueOf(f.weed_count_2_2), 
+				  String.valueOf(f.weed_count_2_3), String.valueOf(f.weed_count_2_4), String.valueOf(f.weed_count_2_5), String.valueOf(f.weed_count_2_6), f.weed_count_2_name, 
+				  String.valueOf(f.weed_count_3_1), String.valueOf(f.weed_count_3_2), String.valueOf(f.weed_count_3_3), String.valueOf(f.weed_count_3_4), 
+				  String.valueOf(f.weed_count_3_5), String.valueOf(f.weed_count_3_6), f.weed_count_3_name, f.west_isolation_condition, f.west_isolation_crop, f.west_isolation_size, 
+				  f.west_isolation_type, f.year, f.status, String.valueOf(f.record_created_at), f.field_assigned };
 		  
 		  getWritableDatabase().execSQL("INSERT OR REPLACE INTO fields (acres, agronomist, area, comments, contract_grower, crop, crop_condition_appearance, " +
 		  		"crop_condition_uniformity, crop_condition_weed, customer_id, date_inspected, date_ready, date_ready_to, east_isolation_condition, " +
@@ -674,17 +691,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  		"field_center_lat, field_center_lng, field_entrance_lat, field_entrance_lng, field_location, field_no, flowering_female, flowering_male, gps_max_lat, " +
 		  		"gps_max_lng, gps_min_lat, gps_min_lng, grower_no, id, inspector_1_id, inspector_2_id, internal_client_comments, male_crop_certificate_no, " +
 		  		"male_seed_sealing_no, male_tags, male_year, north_isolation_condition, north_isolation_crop, north_isolation_size, north_isolation_type, " +
-		  		"objectionable_weeds, open_pollinated_crops, other_crop1_count1, other_crop1_count2, other_crop1_count3, other_crop1_count4, other_crop1_count5, " +
-		  		"other_crop1_count6, other_crop1_name, other_crop2_count1, other_crop2_count2, other_crop2_count3, other_crop2_count4, other_crop2_count5, " +
-		  		"other_crop2_count6, other_crop2_name, other_crop3_count1, other_crop3_count2, other_crop3_count3, other_crop3_count4, other_crop3_count5, " +
-		  		"other_crop3_count6, other_crop3_name, plants_per_m2, previous_crop1, previous_crop2, previous_crop3, previous_crop4, previous_crop5, qa, " +
-		  		"reinspection_of_id, seq_no, south_isolation_condition, south_isolation_crop, south_isolation_size, south_isolation_type, weed1_count1, weed1_count2, " +
-		  		"weed1_count3, weed1_count4, weed1_count5, weed1_count6, weed1_name, weed2_count1, weed2_count2, weed2_count3, weed2_count4, weed2_count5, weed2_count6, " +
-		  		"weed2_name, weed3_count1, weed3_count2, weed3_count3, weed3_count4, weed3_count5, weed3_count6, weed3_name, west_isolation_condition, west_isolation_crop, " +
-		  		"west_isolation_size, west_isolation_type, year, status, record_created_at) " +
+		  		"objectionable_weeds, open_pollinated_crops, other_crop_count_1_1, other_crop_count_1_2, other_crop_count_1_3, other_crop_count_1_4, other_crop_count_1_5, " +
+		  		"other_crop_count_1_6, other_crop_count_1_name, other_crop_count_2_1, other_crop_count_2_2, other_crop_count_2_3, other_crop_count_2_4, other_crop_count_2_5, " +
+		  		"other_crop_count_2_6, other_crop_count_2_name, other_crop_count_3_1, other_crop_count_3_2, other_crop_count_3_3, other_crop_count_3_4, other_crop_count_3_5, " +
+		  		"other_crop_count_3_6, other_crop_count_3_name, plants_per_m2, previous_crop1, previous_crop2, previous_crop3, previous_crop4, previous_crop5, qa, " +
+		  		"reinspection_of_id, seq_no, south_isolation_condition, south_isolation_crop, south_isolation_size, south_isolation_type, weed_count_1_1, weed_count_1_2, " +
+		  		"weed_count_1_3, weed_count_1_4, weed_count_1_5, weed_count_1_6, weed_count_1_name, weed_count_2_1, weed_count_2_2, weed_count_2_3, weed_count_2_4, weed_count_2_5, weed_count_2_6, " +
+		  		"weed_count_2_name, weed_count_3_1, weed_count_3_2, weed_count_3_3, weed_count_3_4, weed_count_3_5, weed_count_3_6, weed_count_3_name, west_isolation_condition, west_isolation_crop, " +
+		  		"west_isolation_size, west_isolation_type, year, status, record_created_at, field_assigned) " +
 		  		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 		  		"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-		  		"?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+		  		"?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
 		  		args);
 		}		
 		
@@ -750,6 +767,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
   }
   
+  public Long current_time(){
+	  Long current_time = System.currentTimeMillis();
+	  return current_time;
+  }
+  
   public List<Field> selectAllFields() {
 		List<Field> list = new ArrayList<Field>();
 		Cursor c = null;
@@ -808,34 +830,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					b.putString("north_isolation_type",c.getString(c.getColumnIndex("north_isolation_type")));
 					b.putString("objectionable_weeds",c.getString(c.getColumnIndex("objectionable_weeds")));
 					b.putString("open_pollinated_crops",c.getString(c.getColumnIndex("open_pollinated_crops")));
-					b.putInt("other_crop1_count1", c.getInt(c.getColumnIndex("other_crop1_count1")));
-					b.putInt("other_crop1_count2", c.getInt(c.getColumnIndex("other_crop1_count2")));
-					b.putInt("other_crop1_count3", c.getInt(c.getColumnIndex("other_crop1_count3")));
-					b.putInt("other_crop1_count4", c.getInt(c.getColumnIndex("other_crop1_count4")));
-					b.putInt("other_crop1_count5", c.getInt(c.getColumnIndex("other_crop1_count5")));
-					b.putInt("other_crop1_count6", c.getInt(c.getColumnIndex("other_crop1_count6")));
-					b.putString("other_crop1_name",c.getString(c.getColumnIndex("other_crop1_name")));
-					b.putInt("other_crop1_count1", c.getInt(c.getColumnIndex("other_crop1_count1")));
-					b.putInt("other_crop1_count2", c.getInt(c.getColumnIndex("other_crop1_count2")));
-					b.putInt("other_crop1_count3", c.getInt(c.getColumnIndex("other_crop1_count3")));
-					b.putInt("other_crop1_count4", c.getInt(c.getColumnIndex("other_crop1_count4")));
-					b.putInt("other_crop1_count5", c.getInt(c.getColumnIndex("other_crop1_count5")));
-					b.putInt("other_crop1_count6", c.getInt(c.getColumnIndex("other_crop1_count6")));
-					b.putString("other_crop1_name",c.getString(c.getColumnIndex("other_crop1_name")));
-					b.putInt("other_crop2_count1", c.getInt(c.getColumnIndex("other_crop2_count1")));
-					b.putInt("other_crop2_count2", c.getInt(c.getColumnIndex("other_crop2_count2")));
-					b.putInt("other_crop2_count3", c.getInt(c.getColumnIndex("other_crop2_count3")));
-					b.putInt("other_crop2_count4", c.getInt(c.getColumnIndex("other_crop2_count4")));
-					b.putInt("other_crop2_count5", c.getInt(c.getColumnIndex("other_crop2_count5")));
-					b.putInt("other_crop2_count6", c.getInt(c.getColumnIndex("other_crop2_count6")));
-					b.putString("other_crop2_name",c.getString(c.getColumnIndex("other_crop2_name")));
-					b.putInt("other_crop3_count1", c.getInt(c.getColumnIndex("other_crop3_count1")));
-					b.putInt("other_crop3_count2", c.getInt(c.getColumnIndex("other_crop3_count2")));
-					b.putInt("other_crop3_count3", c.getInt(c.getColumnIndex("other_crop3_count3")));
-					b.putInt("other_crop3_count4", c.getInt(c.getColumnIndex("other_crop3_count4")));
-					b.putInt("other_crop3_count5", c.getInt(c.getColumnIndex("other_crop3_count5")));
-					b.putInt("other_crop3_count6", c.getInt(c.getColumnIndex("other_crop3_count6")));
-					b.putString("other_crop3_name",c.getString(c.getColumnIndex("other_crop3_name")));
+					b.putInt("other_crop_count_1_1", c.getInt(c.getColumnIndex("other_crop_count_1_1")));
+					b.putInt("other_crop_count_1_2", c.getInt(c.getColumnIndex("other_crop_count_1_2")));
+					b.putInt("other_crop_count_1_3", c.getInt(c.getColumnIndex("other_crop_count_1_3")));
+					b.putInt("other_crop_count_1_4", c.getInt(c.getColumnIndex("other_crop_count_1_4")));
+					b.putInt("other_crop_count_1_5", c.getInt(c.getColumnIndex("other_crop_count_1_5")));
+					b.putInt("other_crop_count_1_6", c.getInt(c.getColumnIndex("other_crop_count_1_6")));
+					b.putString("other_crop_count_1_name",c.getString(c.getColumnIndex("other_crop_count_1_name")));
+					b.putInt("other_crop_count_1_1", c.getInt(c.getColumnIndex("other_crop_count_1_1")));
+					b.putInt("other_crop_count_1_2", c.getInt(c.getColumnIndex("other_crop_count_1_2")));
+					b.putInt("other_crop_count_1_3", c.getInt(c.getColumnIndex("other_crop_count_1_3")));
+					b.putInt("other_crop_count_1_4", c.getInt(c.getColumnIndex("other_crop_count_1_4")));
+					b.putInt("other_crop_count_1_5", c.getInt(c.getColumnIndex("other_crop_count_1_5")));
+					b.putInt("other_crop_count_1_6", c.getInt(c.getColumnIndex("other_crop_count_1_6")));
+					b.putString("other_crop_count_1_name",c.getString(c.getColumnIndex("other_crop_count_1_name")));
+					b.putInt("other_crop_count_2_1", c.getInt(c.getColumnIndex("other_crop_count_2_1")));
+					b.putInt("other_crop_count_2_2", c.getInt(c.getColumnIndex("other_crop_count_2_2")));
+					b.putInt("other_crop_count_2_3", c.getInt(c.getColumnIndex("other_crop_count_2_3")));
+					b.putInt("other_crop_count_2_4", c.getInt(c.getColumnIndex("other_crop_count_2_4")));
+					b.putInt("other_crop_count_2_5", c.getInt(c.getColumnIndex("other_crop_count_2_5")));
+					b.putInt("other_crop_count_2_6", c.getInt(c.getColumnIndex("other_crop_count_2_6")));
+					b.putString("other_crop_count_2_name",c.getString(c.getColumnIndex("other_crop_count_2_name")));
+					b.putInt("other_crop_count_3_1", c.getInt(c.getColumnIndex("other_crop_count_3_1")));
+					b.putInt("other_crop_count_3_2", c.getInt(c.getColumnIndex("other_crop_count_3_2")));
+					b.putInt("other_crop_count_3_3", c.getInt(c.getColumnIndex("other_crop_count_3_3")));
+					b.putInt("other_crop_count_3_4", c.getInt(c.getColumnIndex("other_crop_count_3_4")));
+					b.putInt("other_crop_count_3_5", c.getInt(c.getColumnIndex("other_crop_count_3_5")));
+					b.putInt("other_crop_count_3_6", c.getInt(c.getColumnIndex("other_crop_count_3_6")));
+					b.putString("other_crop_count_3_name",c.getString(c.getColumnIndex("other_crop_count_3_name")));
 					b.putString("plants_per_m2",c.getString(c.getColumnIndex("plants_per_m2")));
 					b.putString("previous_crop1",c.getString(c.getColumnIndex("previous_crop1")));
 					b.putString("previous_crop2",c.getString(c.getColumnIndex("previous_crop2")));
@@ -849,27 +871,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					b.putString("south_isolation_crop",c.getString(c.getColumnIndex("south_isolation_crop")));
 					b.putString("south_isolation_size",c.getString(c.getColumnIndex("south_isolation_size")));
 					b.putString("south_isolation_type",c.getString(c.getColumnIndex("south_isolation_type")));
-					b.putInt("weed1_count1", c.getInt(c.getColumnIndex("weed1_count1")));
-					b.putInt("weed1_count2", c.getInt(c.getColumnIndex("weed1_count2")));
-					b.putInt("weed1_count3", c.getInt(c.getColumnIndex("weed1_count3")));
-					b.putInt("weed1_count4", c.getInt(c.getColumnIndex("weed1_count4")));
-					b.putInt("weed1_count5", c.getInt(c.getColumnIndex("weed1_count5")));
-					b.putInt("weed1_count6", c.getInt(c.getColumnIndex("weed1_count6")));
-					b.putString("weed1_name",c.getString(c.getColumnIndex("weed1_name")));
-					b.putInt("weed2_count1", c.getInt(c.getColumnIndex("weed2_count1")));
-					b.putInt("weed2_count2", c.getInt(c.getColumnIndex("weed2_count2")));
-					b.putInt("weed2_count3", c.getInt(c.getColumnIndex("weed2_count3")));
-					b.putInt("weed2_count4", c.getInt(c.getColumnIndex("weed2_count4")));
-					b.putInt("weed2_count5", c.getInt(c.getColumnIndex("weed2_count5")));
-					b.putInt("weed2_count6", c.getInt(c.getColumnIndex("weed2_count6")));
-					b.putString("weed2_name",c.getString(c.getColumnIndex("weed2_name")));
-					b.putInt("weed3_count1", c.getInt(c.getColumnIndex("weed3_count1")));
-					b.putInt("weed3_count2", c.getInt(c.getColumnIndex("weed3_count2")));
-					b.putInt("weed3_count3", c.getInt(c.getColumnIndex("weed3_count3")));
-					b.putInt("weed3_count4", c.getInt(c.getColumnIndex("weed3_count4")));
-					b.putInt("weed3_count5", c.getInt(c.getColumnIndex("weed3_count5")));
-					b.putInt("weed3_count6", c.getInt(c.getColumnIndex("weed3_count6")));
-					b.putString("weed3_name",c.getString(c.getColumnIndex("weed3_name")));
+					b.putInt("weed_count_1_1", c.getInt(c.getColumnIndex("weed_count_1_1")));
+					b.putInt("weed_count_1_2", c.getInt(c.getColumnIndex("weed_count_1_2")));
+					b.putInt("weed_count_1_3", c.getInt(c.getColumnIndex("weed_count_1_3")));
+					b.putInt("weed_count_1_4", c.getInt(c.getColumnIndex("weed_count_1_4")));
+					b.putInt("weed_count_1_5", c.getInt(c.getColumnIndex("weed_count_1_5")));
+					b.putInt("weed_count_1_6", c.getInt(c.getColumnIndex("weed_count_1_6")));
+					b.putString("weed_count_1_name",c.getString(c.getColumnIndex("weed_count_1_name")));
+					b.putInt("weed_count_2_1", c.getInt(c.getColumnIndex("weed_count_2_1")));
+					b.putInt("weed_count_2_2", c.getInt(c.getColumnIndex("weed_count_2_2")));
+					b.putInt("weed_count_2_3", c.getInt(c.getColumnIndex("weed_count_2_3")));
+					b.putInt("weed_count_2_4", c.getInt(c.getColumnIndex("weed_count_2_4")));
+					b.putInt("weed_count_2_5", c.getInt(c.getColumnIndex("weed_count_2_5")));
+					b.putInt("weed_count_2_6", c.getInt(c.getColumnIndex("weed_count_2_6")));
+					b.putString("weed_count_2_name",c.getString(c.getColumnIndex("weed_count_2_name")));
+					b.putInt("weed_count_3_1", c.getInt(c.getColumnIndex("weed_count_3_1")));
+					b.putInt("weed_count_3_2", c.getInt(c.getColumnIndex("weed_count_3_2")));
+					b.putInt("weed_count_3_3", c.getInt(c.getColumnIndex("weed_count_3_3")));
+					b.putInt("weed_count_3_4", c.getInt(c.getColumnIndex("weed_count_3_4")));
+					b.putInt("weed_count_3_5", c.getInt(c.getColumnIndex("weed_count_3_5")));
+					b.putInt("weed_count_3_6", c.getInt(c.getColumnIndex("weed_count_3_6")));
+					b.putString("weed_count_3_name",c.getString(c.getColumnIndex("weed_count_3_name")));
 					b.putString("west_isolation_condition",c.getString(c.getColumnIndex("west_isolation_condition")));
 					b.putString("west_isolation_crop",c.getString(c.getColumnIndex("west_isolation_crop")));
 					b.putString("west_isolation_size",c.getString(c.getColumnIndex("west_isolation_size")));
@@ -877,6 +899,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					b.putString("year",c.getString(c.getColumnIndex("year")));
 					b.putString("status",c.getString(c.getColumnIndex("status")));
 					b.putInt("record_created_at", c.getInt(c.getColumnIndex("record_created_at")));
+					b.putString("field_assigned", c.getString(c.getColumnIndex("field_assigned")));
 					Field f = new Field(b);
 					//Log.w("fieldinfo:", f.crop);
 					list.add(f);

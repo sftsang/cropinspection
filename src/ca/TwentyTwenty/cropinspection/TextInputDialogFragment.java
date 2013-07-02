@@ -47,7 +47,17 @@ public class TextInputDialogFragment  extends DialogFragment implements
     	if (list_title == "Open Pollinated Crops") {
     		general_data = open_pollinated_crops;
     	} else if (list_title == "Objectionable Weeds") {
-    		general_data = objectionable_weeds;                		
+    		general_data = objectionable_weeds;
+			
+//    		turn this into 4 drop downs frequency/weed x2
+//			freq:
+//				none
+//				trace
+//				few 
+//				numerous
+//			weeds:	
+//				page 37 4 weeds + prohibited
+			
     	} else if (list_title == "Additional Comments") {
     		general_data = comments;
     	}

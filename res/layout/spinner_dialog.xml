@@ -7,6 +7,7 @@
     <Spinner
         android:id="@+id/general_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="10dp" />
 
 </LinearLayout>

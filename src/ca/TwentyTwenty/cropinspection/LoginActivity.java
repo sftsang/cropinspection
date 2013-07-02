@@ -25,8 +25,9 @@ import com.savagelook.android.UrlJsonAsyncTask;
 
 public class LoginActivity extends AbstractMapActivity {
 	
-	//private final static String LOGIN_API_ENDPOINT_URL = "http://192.168.2.186:8084/api/v1/sessions.json";
-	private final static String LOGIN_API_ENDPOINT_URL = "http://192.168.7.4:8084/api/v1/sessions.json";
+//	private final static String LOGIN_API_ENDPOINT_URL = "http://192.168.2.186:8084/api/v1/sessions.json";
+//	private final static String LOGIN_API_ENDPOINT_URL = "http://192.168.7.4:8084/api/v1/sessions.json";
+	private final static String LOGIN_API_ENDPOINT_URL = "http://crop.2020seedlabs.ca/api/v1/sessions.json";
 	private SharedPreferences prefs;
 	private String mUserName;
 	private String mUserPassword;
@@ -35,8 +36,6 @@ public class LoginActivity extends AbstractMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_login);
-
-	    //prefs = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 	    
 	    prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	    
@@ -125,8 +124,9 @@ public class LoginActivity extends AbstractMapActivity {
 	                SharedPreferences.Editor editor = prefs.edit();
 	                // save the returned auth_token into
 	                // the SharedPreferences
-	                Log.w("auth",json.getJSONObject("data").getString("auth_token"));
+	                Log.w("auth",json.getJSONObject("data").getString("uid"));
 	                editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
+	                editor.putString("uid", json.getJSONObject("data").getString("uid"));
 	                editor.commit();
 
 	                // launch the HomeActivity and close this one
@@ -135,7 +135,7 @@ public class LoginActivity extends AbstractMapActivity {
 	                finish();
 	            }
 //	            Toast.makeText(context, json.getString("info"), Toast.LENGTH_LONG).show();
-	            Toast.makeText(context, prefs.getString("AuthToken", null), Toast.LENGTH_LONG).show();
+	            Toast.makeText(context, "Successfully Logged In!", Toast.LENGTH_LONG).show();
 	        } catch (Exception e) {
 	            // something went wrong: show a Toast
 	            // with the exception message

@@ -72,7 +72,7 @@
         android:layout_below="@+id/infobuttons" >
     </ListView>
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/detailbuttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,6 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Preview" />
-    </LinearLayout>
+    </LinearLayout> -->
 
 </RelativeLayout>

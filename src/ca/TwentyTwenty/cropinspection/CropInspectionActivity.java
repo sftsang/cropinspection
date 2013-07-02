@@ -12,6 +12,7 @@ import java.util.Locale;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -78,26 +80,34 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	          map.animateCamera(zoom);
 	          map.setMyLocationEnabled(true);
 	          map.getUiSettings().setMyLocationButtonEnabled(true);
+	          map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 	        }
-	        
-	        // get the list of fields
-	        //List<Field> fields = DatabaseHelper.getInstance(this).selectAllFields();
 	        
 	        // package into a bundle for easy transport
 			Bundle b = new Bundle();
-			b.putString("customer", "Pioneer");
+			b.putString("customer", "All");
 			b.putString("search_filter", "");
-			b.putString("status", "All");
+			b.putString("status", "Field Assigned");
 		
 			// spin up bg thread and find in db
 			AsyncSearch search = new AsyncSearch();
 			search.execute(b);
 	        
-	        // create markers and all associated information
-            //setupFields(fields);
+			// show the user's current co-ordinates
+			map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+				@Override
+				public void onMapLongClick(LatLng arg0) {
+					// need to make a dialog here
+					Toast.makeText(getApplicationContext(), arg0.toString(), Toast.LENGTH_LONG).show();
+				}
+			});
+			
+//			Location findme = map.getMyLocation();
+//	        double latitude = findme.getLatitude();
+//	        double longitude = findme.getLongitude();
+//	        LatLng latLng = new LatLng(latitude, longitude);
 	   }
-	    
-	   //prefs = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
 	   prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	}
 	
@@ -121,37 +131,6 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	  	    }
 	    }
     }
-	
-//	void loadTasksFromAPI(String url) {
-//	    GetTasksTask getTasksTask = new GetTasksTask(CropInspectionActivity.this);
-//	    getTasksTask.setMessageLoading("Syncing fields...");
-//	    getTasksTask.execute(url + "?auth_token=" + prefs.getString("AuthToken", ""));
-//	}
-//	
-//	// inner class for api access
-//	private class GetTasksTask extends UrlJsonAsyncTask {
-//		public GetTasksTask(Context context) {
-//			super(context);
-//		}
-//		
-//		@Override
-//		protected void onPostExecute(JSONObject json) {
-//			try {
-//				JSONArray jsonTasks = json.getJSONObject("data").getJSONArray("tasks");
-//				int length = jsonTasks.length();
-//				List<String> taskTitles = new ArrayList<String>(length);
-//				
-//				for (int i=0;i<length;i++) {
-////					taskTitles.add(jsonTasks.getJSONObject(i).getString("title"));	                
-//					Toast.makeText(context, jsonTasks.getJSONObject(0).getString("title"), Toast.LENGTH_SHORT).show();
-//				}
-//			} catch (Exception e) {
-//				Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-//			} finally {
-//				super.onPostExecute(json);
-//			}
-//		}
-//	}
 
 	  @Override
 	  public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -221,9 +200,6 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    LatLng field_lat_lng = new LatLng(field_center_lat, field_center_lng);
 	    LatLng entrance_lat_lng = new LatLng(field_entrance_lat, field_entrance_lng);
 	    
-	    // TO DO filter out obviously invalid co-ordinates
-	    
-	    
 	    try {
 	    	if (field.date_ready != null  && !field.date_ready.isEmpty()) {
 				date_ready = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready);
@@ -267,11 +243,13 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 //	    }
 	    
 	    Marker m = map.addMarker(new MarkerOptions().position(field_lat_lng)
-	                                     .title(field.crop)
-	                                     .snippet(field.field_location + "\n" + 
+	                                     .title(field.field_no)
+	                                     .snippet(field.crop +  "\n" +
+	                                    		 field.field_location + "\n" + 
 	                                    		 "Grower: "+ field.contract_grower + "\n" +
 	                                    		 "Agronomist: "+ field.agronomist + "\n" +
-	                                    		 "Acres: "+ field.acres + "\n\n" +
+	                                    		 "Acres: "+ field.acres  + "\n" +
+	                                    		 "Assigned: " + field.field_assigned + "\n\n" +
 	                                    		 field_status + "\n" +
 	                                    		 field_date_range)
 	                                      .icon(BitmapDescriptorFactory.fromResource(field.getIcon())));
@@ -294,11 +272,20 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	  public void setupFields(List<Field> fields) {
 		  ListIterator<Field> lit = fields.listIterator();
 	      fieldMarkerMap = new HashMap<Marker, Field>();
+	      LatLngBounds.Builder buildBounds = new LatLngBounds.Builder();
 	      while(lit.hasNext()) {
 	        Field field = (Field)lit.next();
 	        Marker m = addMarker(map, field);
 	        fieldMarkerMap.put(m, field);
+	        
+	        // build our our bounds so we can have the right zoom level
+	        buildBounds.include(m.getPosition());
 	      }
+	      
+	      // finish building the bounds and zoom
+	      LatLngBounds bounds = buildBounds.build();
+	      CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,600,600,5);
+    	  map.animateCamera(cu);
 	      
 	      map.setInfoWindowAdapter(new MapInfoWindowAdapter(getLayoutInflater()));
 	      
@@ -312,7 +299,6 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 				} else {
 					return false;
 				}
-				
 			}
 	      });
 	      
@@ -350,23 +336,8 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 				if (!fields.isEmpty()) {
 					map_activity.map.clear();
 					map_activity.setupFields(fields);
-					// update the UI
-//					FieldDetailItem fd = ((FieldActivity) getActivity()).fieldDetails.get(list_position);
-//					fd.list_item_middle = String.valueOf(b.getInt("type_p1")) + "/" + String.valueOf(b.getInt("type_p2")) + "/" + String.valueOf(b.getInt("type_p3")) + "/" 
-//										  + String.valueOf(b.getInt("type_p4")) + "/" + String.valueOf(b.getInt("type_p5")) + "/" + String.valueOf(b.getInt("type_p6"));
-//					fd.list_item_bottom = b.getString("type_name");
-//					ListView lv = (ListView) ((FieldActivity) getActivity()).findViewById(R.id.fielddetails);
-//					BaseAdapter ba = (BaseAdapter) lv.getAdapter();
-//					ba.notifyDataSetChanged();
-//					
-//					// update the appropriate parts of the field object too
-//					String list_title = b.getString("list_title");
-//					if (list_title == "Off-type 1") {
-//						((FieldActivity) getActivity()).field_details.other_crop_count_1_1 = b.getInt("type_p1");
-//						((FieldActivity) getActivity()).field_details.weed2_name = b.getString("type_name");
-//					}
 				} else {
-					Toast.makeText(map_activity.getApplicationContext(), "No fields found.", Toast.LENGTH_LONG).show();
+					Toast.makeText(map_activity.getApplicationContext(), "Sorry, no fields for this search.", Toast.LENGTH_LONG).show();
 				}
 			}
 		}

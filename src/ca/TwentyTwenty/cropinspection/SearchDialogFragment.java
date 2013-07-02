@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
@@ -22,11 +24,14 @@ public class SearchDialogFragment extends DialogFragment implements
 	
 	private View form = null;
 	private CropInspectionActivity map_activity;
+	private SharedPreferences prefs;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	  form = getActivity().getLayoutInflater().inflate(R.layout.search_dialog, null);
+	  prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 	  
+	  // Customer search field
 	  Spinner customer_spinner = (Spinner)form.findViewById(R.id.customer_spinner);
 	  List<String> customer_list = new ArrayList<String>();
 	  customer_list.add("All");
@@ -39,9 +44,14 @@ public class SearchDialogFragment extends DialogFragment implements
 	  ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, customer_list); 
 	  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	  customer_spinner.setAdapter(dataAdapter);
+	  String stored_search_customer = prefs.getString("search_customer", "");
+	  customer_spinner.setSelection(dataAdapter.getPosition(stored_search_customer));
 	  
+	  // Keyword search field
 	  EditText search_filter = (EditText) form.findViewById(R.id.search_filter);
+	  search_filter.setText(prefs.getString("search_filter", ""));
 	  
+	  // Field status search field
 	  Spinner status_spinner = (Spinner)form.findViewById(R.id.status_spinner);
 	  List<String> status_list = new ArrayList<String>();
 	  status_list.add("All");
@@ -55,6 +65,8 @@ public class SearchDialogFragment extends DialogFragment implements
 	  dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, status_list); 
 	  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	  status_spinner.setAdapter(dataAdapter);
+	  String stored_search_status = prefs.getString("search_status", "");
+	  status_spinner.setSelection(dataAdapter.getPosition(stored_search_status));
 	
 	  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	
@@ -64,13 +76,7 @@ public class SearchDialogFragment extends DialogFragment implements
 	}
 	
 	@Override
-	public void onClick(DialogInterface dialog, int which) {
-//		((AbstractMapActivity) getActivity()).f dismiss(R.layout.search_dialog);
-		// clear map
-		// do a search
-		// add markers to map
-		// dismiss the dialog
-//		this.getFragmentManager().findFragmentById(layout.main).getActivity().		
+	public void onClick(DialogInterface dialog, int which) {		
 		Spinner customer_spinner = (Spinner)form.findViewById(R.id.customer_spinner);
 		EditText search_filter = (EditText)form.findViewById(R.id.search_filter);
 		Spinner status_spinner = (Spinner)form.findViewById(R.id.status_spinner);
@@ -80,7 +86,17 @@ public class SearchDialogFragment extends DialogFragment implements
 		b.putString("customer", customer_spinner.getSelectedItem().toString());
 		b.putString("search_filter", search_filter.getEditableText().toString());
 		b.putString("status", status_spinner.getSelectedItem().toString());
-	
+		
+		// while we are at it remember these choices for next time
+		
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("search_customer", customer_spinner.getSelectedItem().toString());
+		editor.putString("search_filter", search_filter.getEditableText().toString());
+		editor.putString("search_status", status_spinner.getSelectedItem().toString());		
+        editor.commit();
+      
+//        Log.w("auth",json.getJSONObject("data").getString("uid"));
+        
 		// spin up bg thread and find in db
 		AsyncSearch search = new AsyncSearch();
 		search.execute(b);		
@@ -115,7 +131,7 @@ public class SearchDialogFragment extends DialogFragment implements
 	}
 	
 	private class AsyncSearch extends AsyncTask<Bundle, Void, ArrayList<Field>> {
-		ArrayList<Field> fields;
+		ArrayList<Field> fields = new ArrayList<Field>();
 		
 		@Override
 		protected ArrayList<Field> doInBackground(Bundle... b) {
@@ -133,21 +149,6 @@ public class SearchDialogFragment extends DialogFragment implements
 			if (!fields.isEmpty()) {
 				map_activity.map.clear();
 				map_activity.setupFields(fields);
-				// update the UI
-//				FieldDetailItem fd = ((FieldActivity) getActivity()).fieldDetails.get(list_position);
-//				fd.list_item_middle = String.valueOf(b.getInt("type_p1")) + "/" + String.valueOf(b.getInt("type_p2")) + "/" + String.valueOf(b.getInt("type_p3")) + "/" 
-//									  + String.valueOf(b.getInt("type_p4")) + "/" + String.valueOf(b.getInt("type_p5")) + "/" + String.valueOf(b.getInt("type_p6"));
-//				fd.list_item_bottom = b.getString("type_name");
-//				ListView lv = (ListView) ((FieldActivity) getActivity()).findViewById(R.id.fielddetails);
-//				BaseAdapter ba = (BaseAdapter) lv.getAdapter();
-//				ba.notifyDataSetChanged();
-//				
-//				// update the appropriate parts of the field object too
-//				String list_title = b.getString("list_title");
-//				if (list_title == "Off-type 1") {
-//					((FieldActivity) getActivity()).field_details.other_crop1_count1 = b.getInt("type_p1");
-//					((FieldActivity) getActivity()).field_details.weed2_name = b.getString("type_name");
-//				}
 			} else {
 				Toast.makeText(map_activity.getApplicationContext(), "No fields found.", Toast.LENGTH_LONG).show();
 			}
