@@ -61,7 +61,7 @@ public class GeneralSpinnerDialogFragment extends DialogFragment implements
 			spinner_list.add("Poor");
 			general_data = crop_condition_appearance;
 		} else if (list_title == "Weed Condition") {
-			spinner_list.add("None found");
+			spinner_list.add("Clean");
 			spinner_list.add("Trace");
 			spinner_list.add("Few");
 			spinner_list.add("Numerous");

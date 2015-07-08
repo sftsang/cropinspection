@@ -97,7 +97,7 @@ public class FieldXmlParser {
     	Long epoch = (long) 0;
     	
     	try {
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.CANADA);
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
         	date = sdf.parse(date_string);
         	epoch = date.getTime();
     	} catch (Exception e) {

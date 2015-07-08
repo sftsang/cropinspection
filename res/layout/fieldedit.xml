@@ -68,17 +68,16 @@
         android:id="@+id/fielddetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/detailbuttons"
         android:layout_below="@+id/infobuttons" >
     </ListView>
 
     <!-- <LinearLayout
-        android:id="@+id/detailbuttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
-
+         android:id="@+id/detailbuttons"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_below="@id/fielddetails"
+         android:gravity="center" >
         <Button
             android:id="@+id/sign"
             android:layout_width="wrap_content"
@@ -91,5 +90,4 @@
             android:layout_height="wrap_content"
             android:text="Preview" />
     </LinearLayout> -->
-
 </RelativeLayout>

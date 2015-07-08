@@ -14,11 +14,13 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import ca.TwentyTwenty.cropinspection.FieldXmlParser.Customer;
@@ -108,6 +110,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       // create table that map will pull from
       db.execSQL("CREATE TABLE fields" + sql_attr);
       
+      // key insert_or_update on field_location
+      db.execSQL("CREATE INDEX field_location_idx ON fields(field_location);");
+      
       db.setTransactionSuccessful();
     }
     finally {
@@ -156,7 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  // update the bundle so we can update the ui with this translation
 	  b.putString("isolation_crop", iso_crop_statement);
 	  
-	  String[] args= { b.getString("isolation_size"), b.getString("isolation_type"), b.getString("isolation_condition"), iso_crop_statement, String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
+	  String[] args= { b.getString("isolation_size"), b.getString("isolation_type"), b.getString("isolation_condition"), iso_crop_statement,  String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = list_title.toLowerCase(Locale.US);
 	  b.putLong("record_modified_at", current_time());
@@ -197,7 +202,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  String[] args= { b.getString("general_data"), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
 	  String list_title = b.getString("list_title");
 	  String query_var = "";
-	  b.putLong("record_modified_at", current_time());
+	  //b.putLong("record_modified_at", current_time());
 	  	  
 	  if (list_title == "Uniformity" ){
 		  query_var = "crop_condition_uniformity";
@@ -266,7 +271,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   }
   
   void saveInspectedByDialog(Bundle b) {
-	  Calendar c = Calendar.getInstance();
 	  b.putLong("date_inspected", current_time());
 	  b.putLong("record_modified_at", current_time());
 	  
@@ -276,6 +280,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  getWritableDatabase().execSQL("UPDATE fields SET inspector_1_id = ?, inspector_2_id = ?, date_inspected = ?, record_modified_at = ? WHERE id = ?", args);		  		  
 	  } catch(Exception e) {
 		  Log.e("Inspected Dialog", "Error saving inspected by data.");
+	  }
+  }
+  
+  void saveFieldReadyDialog(Bundle b) {
+	  b.putLong("record_modified_at", current_time());
+	  String[] args= { b.getString("date_ready"), b.getString("date_ready_to"), String.valueOf(current_time()), String.valueOf(b.getInt("field_id")) };
+
+	  try {	  
+		  getWritableDatabase().execSQL("UPDATE fields SET date_ready = ?, date_ready_to = ?, record_modified_at = ? WHERE id = ?", args);
+	  } catch(Exception e) {
+		  Log.e("Field Ready Dialog", "Error saving field ready data.");
 	  }
   }
   
@@ -299,7 +314,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  		"other_crop_count_3_3, other_crop_count_3_4, other_crop_count_3_5, other_crop_count_3_6, other_crop_count_3_name, plants_per_m2, qa, south_isolation_condition, south_isolation_crop, " +
 		  		"south_isolation_size, south_isolation_type, weed_count_1_1, weed_count_1_2, weed_count_1_3, weed_count_1_4, weed_count_1_5, weed_count_1_6, weed_count_1_name, weed_count_2_1, weed_count_2_2, weed_count_2_3, " +
 		  		"weed_count_2_4, weed_count_2_5, weed_count_2_6, weed_count_2_name, weed_count_3_1, weed_count_3_2, weed_count_3_3, weed_count_3_4, weed_count_3_5, weed_count_3_6, weed_count_3_name, west_isolation_condition, " +
-		  		"west_isolation_crop, west_isolation_size, west_isolation_type, record_created_at, record_modified_at, field_assigned " +
+		  		"west_isolation_crop, west_isolation_size, west_isolation_type, record_created_at, record_modified_at, field_assigned, date_ready, date_ready_to " +
 		  		"FROM fields WHERE record_modified_at > ?", args);
 		  c.moveToFirst();
 	      while(!c.isAfterLast()){
@@ -399,6 +414,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  ArrayList<String> query = new ArrayList<String>();
 	  ArrayList<String> query_args = new ArrayList<String>();
 	  String full_query_string = "SELECT * FROM fields";
+	  String uid = b.getString("uid");
 	  
 	  if (status != "All") {
 		  // manipulate status text to fit db status
@@ -410,6 +426,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			  query_args.add("field_ready");
 			  query_args.add("field_assigned");
 			  query_args.add("field_reinspection");
+		  } else if (status == "Fields Assigned To Me"){
+			  query.add("field_assigned = ?");
+			  query_args.add(uid);
 		  } else {
 			  query.add("status = ?");
 			  query_args.add(mod_status);  
@@ -452,7 +471,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  Cursor c = null;
 	  
 	  ArrayList<Field> found_fields = new ArrayList<Field>();
-	  //Log.w("qs", full_query_string + strJoin(args,","));
+	  Log.w("qs", full_query_string + strJoin(args,","));
 	  try {
 		  
 		  if (args.length > 0) {
@@ -663,12 +682,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		while(fs.hasNext()) {
 		  Field f = (Field) fs.next();
 		  
-		  String[] args= { f.acres, f.agronomist, f.area, f.comments, f.contract_grower, f.crop, f.crop_condition_appearance, f.crop_condition_uniformity, 
+		  String[] args= { String.valueOf(f.id), f.acres, f.agronomist, f.area, f.comments, f.contract_grower, f.crop, f.crop_condition_appearance, f.crop_condition_uniformity, 
 				  f.crop_condition_weed, String.valueOf(f.customer_id), String.valueOf(f.date_inspected), f.date_ready, f.date_ready_to, f.east_isolation_condition, 
 				  f.east_isolation_crop, f.east_isolation_size, f.east_isolation_type, f.female_crop_certificate_no, f.female_seed_sealing_no, f.female_tags, 
 				  f.female_year, String.valueOf(f.field_center_lat), String.valueOf(f.field_center_lng), String.valueOf(f.field_entrance_lat), 
 				  String.valueOf(f.field_entrance_lng), f.field_location, f.field_no, f.flowering_female, f.flowering_male, String.valueOf(f.gps_max_lat), 
-				  String.valueOf(f.gps_max_lng), String.valueOf(f.gps_min_lat), String.valueOf(f.gps_min_lng), f.grower_no, String.valueOf(f.id), 
+				  String.valueOf(f.gps_max_lng), String.valueOf(f.gps_min_lat), String.valueOf(f.gps_min_lng), f.grower_no,  
 				  String.valueOf(f.inspector_1_id), String.valueOf(f.inspector_2_id), f.internal_client_comments, f.male_crop_certificate_no, f.male_seed_sealing_no, 
 				  f.male_tags, f.male_year, f.north_isolation_condition, f.north_isolation_crop, f.north_isolation_size, f.north_isolation_type, f.objectionable_weeds, 
 				  f.open_pollinated_crops, String.valueOf(f.other_crop_count_1_1), String.valueOf(f.other_crop_count_1_2), String.valueOf(f.other_crop_count_1_3), 
@@ -685,11 +704,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				  String.valueOf(f.weed_count_3_5), String.valueOf(f.weed_count_3_6), f.weed_count_3_name, f.west_isolation_condition, f.west_isolation_crop, f.west_isolation_size, 
 				  f.west_isolation_type, f.year, f.status, String.valueOf(f.record_created_at), f.field_assigned };
 		  
-		  getWritableDatabase().execSQL("INSERT OR REPLACE INTO fields (acres, agronomist, area, comments, contract_grower, crop, crop_condition_appearance, " +
+		  getWritableDatabase().execSQL("INSERT OR REPLACE INTO fields (id, acres, agronomist, area, comments, contract_grower, crop, crop_condition_appearance, " +
 		  		"crop_condition_uniformity, crop_condition_weed, customer_id, date_inspected, date_ready, date_ready_to, east_isolation_condition, " +
 		  		"east_isolation_crop, east_isolation_size, east_isolation_type, female_crop_certificate_no, female_seed_sealing_no, female_tags, female_year, " +
 		  		"field_center_lat, field_center_lng, field_entrance_lat, field_entrance_lng, field_location, field_no, flowering_female, flowering_male, gps_max_lat, " +
-		  		"gps_max_lng, gps_min_lat, gps_min_lng, grower_no, id, inspector_1_id, inspector_2_id, internal_client_comments, male_crop_certificate_no, " +
+		  		"gps_max_lng, gps_min_lat, gps_min_lng, grower_no, inspector_1_id, inspector_2_id, internal_client_comments, male_crop_certificate_no, " +
 		  		"male_seed_sealing_no, male_tags, male_year, north_isolation_condition, north_isolation_crop, north_isolation_size, north_isolation_type, " +
 		  		"objectionable_weeds, open_pollinated_crops, other_crop_count_1_1, other_crop_count_1_2, other_crop_count_1_3, other_crop_count_1_4, other_crop_count_1_5, " +
 		  		"other_crop_count_1_6, other_crop_count_1_name, other_crop_count_2_1, other_crop_count_2_2, other_crop_count_2_3, other_crop_count_2_4, other_crop_count_2_5, " +

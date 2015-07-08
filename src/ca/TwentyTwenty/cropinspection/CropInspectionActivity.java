@@ -195,6 +195,7 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 	    String field_date_range = "";
 	    Date date_ready = null;
 	    Date date_ready_to = null;
+	    Date date_ready_to_same = null;
 	    Date now = new Date();
 	    
 	    LatLng field_lat_lng = new LatLng(field_center_lat, field_center_lng);
@@ -205,10 +206,13 @@ public class CropInspectionActivity extends AbstractMapActivity implements
 				date_ready = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready);
 				date_ready_to = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(field.date_ready_to);
 				
-				if (date_ready.before(now) && date_ready_to.after(now)) {
+				// deal with situation where field is only ready for 1 day
+				date_ready_to_same = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(field.date_ready_to + " 11:59:00");
+				 
+				if ((date_ready.before(now) && date_ready_to.after(now)) || (date_ready.before(now) && date_ready_to_same.after(now))) {
 			    	field_status = "FIELD READY";
 			    } else {
-			    	field_status = "FIELD READY";
+			    	field_status = "FIELD NOT READY";
 			    }
 	    	} else {
 		    	field_status = "FIELD NOT READY";

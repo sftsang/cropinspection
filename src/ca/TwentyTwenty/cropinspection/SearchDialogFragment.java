@@ -55,7 +55,7 @@ public class SearchDialogFragment extends DialogFragment implements
 	  Spinner status_spinner = (Spinner)form.findViewById(R.id.status_spinner);
 	  List<String> status_list = new ArrayList<String>();
 	  status_list.add("All");
-	  status_list.add("Field Assigned");
+	  status_list.add("Fields Assigned To Me");
 	  status_list.add("Inspection Completed");
 	  status_list.add("Field Not Ready");
 	  status_list.add("Field Ready Expired");
@@ -86,6 +86,7 @@ public class SearchDialogFragment extends DialogFragment implements
 		b.putString("customer", customer_spinner.getSelectedItem().toString());
 		b.putString("search_filter", search_filter.getEditableText().toString());
 		b.putString("status", status_spinner.getSelectedItem().toString());
+		b.putString("uid", prefs.getString("uid", null));
 		
 		// while we are at it remember these choices for next time
 		

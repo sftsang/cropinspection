@@ -142,7 +142,7 @@ public class Field {
 	// build new object from database cursor
 	public Field(Cursor c){
 		// this is a limited select for uploading
-		if (c.getColumnCount() == 78) {
+		if (c.getColumnCount() == 80) {
 			this.acres = c.getString(c.getColumnIndex("acres"));
 			this.comments = c.getString(c.getColumnIndex("comments"));
 			this.crop_condition_appearance = c.getString(c.getColumnIndex("crop_condition_appearance"));
@@ -150,6 +150,8 @@ public class Field {
 			this.crop_condition_weed = c.getString(c.getColumnIndex("crop_condition_weed"));
 			this.customer_id = c.getInt(c.getColumnIndex("customer_id"));
 			this.date_inspected = c.getLong(c.getColumnIndex("date_inspected"));
+			this.date_ready = c.getString(c.getColumnIndex("date_ready"));
+			this.date_ready_to = c.getString(c.getColumnIndex("date_ready_to"));
 			this.east_isolation_condition = c.getString(c.getColumnIndex("east_isolation_condition"));
 			this.east_isolation_crop = c.getString(c.getColumnIndex("east_isolation_crop"));
 			this.east_isolation_size = c.getString(c.getColumnIndex("east_isolation_size"));
